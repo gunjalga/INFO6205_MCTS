@@ -22,9 +22,11 @@ public class RandomWalk {
     private void move(int dx, int dy) {
         // TO BE IMPLEMENTED  do move
 
+        this.x+=dx;
+        this.y+=dy;
 
         // SKELETON
-         throw new RuntimeException("Not implemented");
+        //  throw new RuntimeException("Not implemented");
         // END SOLUTION
     }
 
@@ -36,8 +38,11 @@ public class RandomWalk {
     private void randomWalk(int m) {
         // TO BE IMPLEMENTED 
 
+        for(int i=0;i<m;i++){
+            randomMove();
+        }
 
-throw new RuntimeException("implementation missing");
+// throw new RuntimeException("implementation missing");
     }
 
     /**
@@ -58,8 +63,11 @@ throw new RuntimeException("implementation missing");
     public double distance() {
         // TO BE IMPLEMENTED 
 
+        int xSq = this.x*this.x;
+        int ySq = this.y*this.y;
+        double distance = Math.sqrt(xSq+ySq);
         // SKELETON
-         return 0.0;
+         return distance;
         // END SOLUTION
     }
 
@@ -81,6 +89,8 @@ throw new RuntimeException("implementation missing");
     }
 
     public static void main(String[] args) {
+        // int m = 5;
+        // int n = 10;
         if (args.length == 0)
             throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
         int m = Integer.parseInt(args[0]);
