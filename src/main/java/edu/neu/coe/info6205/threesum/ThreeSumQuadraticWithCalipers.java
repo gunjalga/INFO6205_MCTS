@@ -49,6 +49,32 @@ public class ThreeSumQuadraticWithCalipers implements ThreeSum {
     public static List<Triple> calipers(int[] a, int i, Function<Triple, Integer> function) {
         List<Triple> triples = new ArrayList<>();
         // TO BE IMPLEMENTED  : use function to qualify triples and to navigate otherwise.
+        int left =  i + 1;
+        int right = a.length -1;
+
+        while (left < right) {
+
+            int sum = function.apply(new Triple(a[i] , a[left] , a[right]));
+
+            if (sum == 0) {
+                triples.add(new Triple(a[i], a[left], a[right]));
+                while (left < right && a[left] == a[left + 1]) {
+                    left++;
+                }
+                while (left < right && a[right] == a[right - 1]) {
+                    right--;
+                }
+
+                left++;
+                right--;
+            } else if (sum < 0) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return triples;
 
 
 
@@ -61,8 +87,7 @@ public class ThreeSumQuadraticWithCalipers implements ThreeSum {
 
 
 
-
-throw new RuntimeException("implementation missing");
+//throw new RuntimeException("implementation missing");
     }
 
     private final int[] a;

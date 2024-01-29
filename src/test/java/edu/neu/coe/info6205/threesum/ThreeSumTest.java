@@ -1,5 +1,6 @@
 package edu.neu.coe.info6205.threesum;
 
+import edu.neu.coe.info6205.util.Stopwatch;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -151,6 +152,29 @@ public class ThreeSumTest {
         Triple[] triplesQuadratic = target.getTriples();
         Triple[] triplesCubic = new ThreeSumCubic(ints).getTriples();
         assertEquals(triplesCubic.length, triplesQuadratic.length);
+    }
+    @Test
+    public void test1() {
+        Supplier<int[]> intsSupplier = new Source(1600, 1000).intsSupplier(10);
+        int[] ints = intsSupplier.get();
+        ThreeSum target1 = new ThreeSumCubic(ints);
+        ThreeSum target2 = new ThreeSumQuadrithmic(ints);
+        ThreeSum target3 = new ThreeSumQuadratic(ints);
+        ThreeSum target4 = new ThreeSumQuadraticWithCalipers(ints);
+        try(Stopwatch stopwatch= new Stopwatch()){
+            Triple[] triplesCubic =  target1.getTriples();
+            System.out.println("Cubic time  ="+stopwatch.lap());
+            Triple[] triplesQuadrithmic =  target2.getTriples();
+            System.out.println("Quadrithmic time  ="+stopwatch.lap());
+            Triple[] triplesQuadratic =  target3.getTriples();
+            System.out.println("Quadratic time  ="+stopwatch.lap());
+            Triple[] triplesQuadraticWithCalipers = target4.getTriples();
+            System.out.println("QuadraticWithCalipers time  ="+stopwatch.lap());
+            stopwatch.close();
+            assertEquals(triplesCubic.length, triplesQuadratic.length);
+            assertEquals(triplesQuadrithmic.length,triplesQuadraticWithCalipers.length);
+        }
+
     }
 
 }
