@@ -3,10 +3,17 @@
  */
 package edu.neu.coe.info6205.sort.elementary;
 
-import edu.neu.coe.info6205.sort.BaseHelper;
-import edu.neu.coe.info6205.sort.Helper;
-import edu.neu.coe.info6205.sort.SortWithHelper;
+import edu.neu.coe.info6205.sort.*;
+import edu.neu.coe.info6205.util.Benchmark_Timer;
 import edu.neu.coe.info6205.util.Config;
+import edu.neu.coe.info6205.util.StatPack;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * Class InsertionSort.
@@ -63,17 +70,43 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
     public void sort(X[] xs, int from, int to) {
         final Helper<X> helper = getHelper();
 
-        // TO BE IMPLEMENTED 
+        // TO BE IMPLEMENTED
+        for (int i = from + 1; i < to; i++) {
+            for (int j = i; j > from && helper.swapStableConditional(xs, j); j--) {
+
+            }
+        }
 
 
 
-
-throw new RuntimeException("implementation missing");
+//throw new RuntimeException("implementation missing");
     }
 
     public static final String DESCRIPTION = "Insertion sort";
 
     public static <T extends Comparable<T>> void sort(T[] ts) {
         new InsertionSort<T>().mutatingSort(ts);
+    }
+
+    public static void main(String[] args) {
+
+        int n = 160;
+        final Config config = Config.setupConfig("true", "0", "1", "", "");
+        Helper<Integer> helper = HelperFactory.create("InsertionSort", n, config);
+
+        Random random = new Random();
+        final Supplier<Integer[]> intsSupplier = () -> {
+            Integer[] result = (Integer[]) Array.newInstance(Integer.class, n);
+            for (int i = 0; i < n; i++) result[i] = random.nextInt();
+            return result;
+        };
+        double timer = new Benchmark_Timer<Integer []>(helper.getDescription(), (xs) -> Arrays.copyOf(xs, xs.length),
+                (xs) -> {
+            InsertionSort<Integer> sorter1 = new InsertionSort<>(helper); // Assuming getHelper() is accessible
+            sorter1.sort( xs, 0, xs.length);
+//            return xs;
+        } ,null ).runFromSupplier(intsSupplier,100);
+
+        System.out.println(timer);
     }
 }
