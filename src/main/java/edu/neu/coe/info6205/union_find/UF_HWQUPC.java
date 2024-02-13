@@ -9,6 +9,8 @@ package edu.neu.coe.info6205.union_find;
 
 import java.util.Arrays;
 
+import scala.annotation.varargs;
+
 /**
  * Height-weighted Quick Union with Path Compression
  */
@@ -81,13 +83,18 @@ public class UF_HWQUPC implements UF {
     public int find(int p) {
         validate(p);
         int root = p;
+        while(root!=parent[root]){
+            if(pathCompression)doPathCompression(root);
+            root=parent[root];
+        }
         // TO BE IMPLEMENTED 
 
 
+        return root;
 
 
 
-throw new RuntimeException("implementation missing");
+// throw new RuntimeException("implementation missing");
     }
 
     /**
@@ -175,7 +182,14 @@ throw new RuntimeException("implementation missing");
     private void mergeComponents(int i, int j) {
         // TO BE IMPLEMENTED  make shorter root point to taller one
 
-
+        if(i==j)return;
+        if(height[i]<height[j]){
+            parent[i]=j;
+            height[j]+=height[i];
+        }else{
+            parent[j]=i;
+            height[i]+=height[j];
+        }
 
 
 
@@ -190,6 +204,8 @@ throw new RuntimeException("implementation missing");
      */
     private void doPathCompression(int i) {
         // TO BE IMPLEMENTED  update parent to value of grandparent
+
+            parent[i]=parent[parent[i]];
 
         // SKELETON
         // END SOLUTION
