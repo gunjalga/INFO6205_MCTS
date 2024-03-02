@@ -1,5 +1,8 @@
 package edu.neu.coe.info6205.sort.par;
 
+import edu.neu.coe.info6205.sort.linearithmic.MergeSortBasic;
+import edu.neu.coe.info6205.util.Config;
+
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,36 +25,60 @@ public class Main {
         Random random = new Random();
         int[] array = new int[2000000];
         ArrayList<Long> timeList = new ArrayList<>();
-        for (int j = 50; j < 100; j++) {
-            ParSort.cutoff = 10000 * (j + 1);
+        for (int j = 20; j < 80; j++) {
+            ParSort.cutoff = 10000 * (j + 2);
             // for (int i = 0; i < array.length; i++) array[i] = random.nextInt(10000000);
             long time;
+            long normalTime;
             long startTime = System.currentTimeMillis();
             for (int t = 0; t < 10; t++) {
                 for (int i = 0; i < array.length; i++) array[i] = random.nextInt(10000000);
                 ParSort.sort(array, 0, array.length);
             }
             long endTime = System.currentTimeMillis();
+            Integer[] integerArray = new Integer[array.length];
+            for (int i = 0; i < array.length; i++) {
+                integerArray[i] = array[i]; // Autoboxing
+            }
+//            long normalStime = System.currentTimeMillis();
+//            for (int t = 0; t < 10; t++) {
+//                final Config config = Config.setupConfigFixes();
+//                MergeSortBasic<Integer> sorter = new MergeSortBasic<Integer>(array.length,config);
+//                sorter.sort(integerArray ,true);
+//            }
+//            long normalEtime = System.currentTimeMillis();
+//            normalTime=(normalEtime-normalStime);
             time = (endTime - startTime);
             timeList.add(time);
 
 
             System.out.println("cutoff：" + (ParSort.cutoff) + "\t\t10times Time:" + time + "ms");
+//            System.out.println( "\t\t10times Time:" + normalTime + "ms");
 
         }
         try {
-            FileOutputStream fis = new FileOutputStream("./src/result.csv");
+            FileOutputStream fis = new FileOutputStream("./src/resultcutoff2.csv");
             OutputStreamWriter isr = new OutputStreamWriter(fis);
             BufferedWriter bw = new BufferedWriter(isr);
-            int j = 0;
+            int j = 20;
             for (long i : timeList) {
-                String content = (double) 10000 * (j + 1) / 2000000 + "," + (double) i / 10 + "\n";
+                String content = (double) 10000 * (j + 2)/2000000   + "\n";
                 j++;
                 bw.write(content);
                 bw.flush();
             }
             bw.close();
+            FileOutputStream fis1 = new FileOutputStream("./src/result2.csv");
+            OutputStreamWriter isr1 = new OutputStreamWriter(fis1);
+            BufferedWriter bw1 = new BufferedWriter(isr1);
 
+            for (long i : timeList) {
+                String content =  (double) i/10  + "\n";
+                j++;
+                bw1.write(content);
+                bw1.flush();
+            }
+            bw1.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
