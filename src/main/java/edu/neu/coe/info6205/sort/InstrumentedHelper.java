@@ -273,7 +273,8 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
 
     @Override
     public String toString() {
-        return "Instrumenting helper for " + description + " with " + formatWhole(n) + " elements";
+        return "Instrumenting helper for " + description + " with " + formatWhole(n) + " elements" ;
+
     }
 
     /**
@@ -323,6 +324,7 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
         super.postProcess(xs);
         if (!sorted(xs)) throw new BaseHelper.HelperException("Array is not sorted");
         gatherStatistic();
+//        System.out.println(getCopies());
     }
 
     private void gatherStatistic() {
@@ -379,6 +381,7 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
      */
     public InstrumentedHelper(String description, int n, Random random, Config config) {
         // CONSIDER using config.toString here somewhere.
+
         super(description, n, random, config);
         this.showStats = config.getBoolean(INSTRUMENTING, SHOW_STATS);
         this.countCopies = config.getBoolean(INSTRUMENTING, COPIES);
