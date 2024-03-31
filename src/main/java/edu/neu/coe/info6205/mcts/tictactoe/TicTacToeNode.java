@@ -103,6 +103,7 @@ public class TicTacToeNode implements Node<TicTacToe> {
             double uctScore = calculateUCTScore((TicTacToeNode) child);
             if (uctScore > bestScore) {
                 bestScore = uctScore;
+                bestChild.clear();
                 bestChild.add(child);
             } else if (uctScore==bestScore) {
                 bestChild.add(child);
@@ -112,9 +113,6 @@ public class TicTacToeNode implements Node<TicTacToe> {
         return bestChild.get(new Random().nextInt(bestChild.size()));
     }
     private double calculateUCTScore(TicTacToeNode child) {
-//        int currentPlayer=0;
-//        if(child.state.player()==1)currentPlayer=-1;
-//        if(child.state.player()==0)currentPlayer=1;
         double exploitationTerm = ((double) child.wins() / child.playouts());
         double explorationTerm = 2 * Math.sqrt(Math.log(playouts()) / child.playouts());
         return exploitationTerm + explorationTerm;
