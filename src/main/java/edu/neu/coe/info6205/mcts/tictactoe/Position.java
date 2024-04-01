@@ -149,11 +149,11 @@ public class Position {
             int[] row=projectRow(i);
             int[] col=projectCol(i);
             if(row[0]==row[1] && row[1]==row[2] && row[1]!=-1){
-                System.out.println("Winner row:"+i);
+//                System.out.println("Winner row:"+i);
                 return true;
             }
             if(col[0]==col[1] && col[1]==col[2] && col[2]!=-1) {
-                System.out.println("Winner column:"+i);
+//                System.out.println("Winner column:"+i);
                 return true;
             }
         }

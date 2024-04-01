@@ -41,14 +41,22 @@ public class TicTacToeNode implements Node<TicTacToe> {
     }
     public void simulateRandom(){
         int currentPlayer = this.state.player();
+        int levelPlayer = 1-currentPlayer;
         State<TicTacToe>newState=this.state;
         while(!newState.isTerminal()){
             newState=newState.next(newState.chooseMove(currentPlayer));
             currentPlayer=1-currentPlayer;
         }
+        currentPlayer=1-currentPlayer;
         Node<TicTacToe> tempNode = new TicTacToeNode(newState);
         this.updatePlayouts(tempNode.playouts());
-        this.updateWins(tempNode.wins());
+        if(newState.winner().isPresent()){
+            this.updateWins(levelPlayer==currentPlayer?tempNode.wins():-tempNode.wins());
+        }
+        else{
+            this.updateWins(0);
+        }
+
 
     }
 //    /**
@@ -98,9 +106,13 @@ public class TicTacToeNode implements Node<TicTacToe> {
 //        if children empty return same node
         double bestScore = Double.NEGATIVE_INFINITY;
         List<Node<TicTacToe>> bestChild = new ArrayList<>();
-
+        double uctScore;
         for (Node<TicTacToe> child : children) {
-            double uctScore = calculateUCTScore((TicTacToeNode) child);
+//            if(child.state().isTerminal()){
+//                uctScore=Double.NEGATIVE_INFINITY;
+//            }else{
+                uctScore = calculateUCTScore((TicTacToeNode) child);
+//            }
             if (uctScore > bestScore) {
                 bestScore = uctScore;
                 bestChild.clear();
@@ -173,10 +185,9 @@ public class TicTacToeNode implements Node<TicTacToe> {
         if (isLeaf()) {
             playouts = 1;
             Optional<Integer> winner = state.winner();
-            if (winner.isPresent()&&state.player()==0)
-                wins = -1; // CONSIDER check that the winner is the correct player. We shouldn't need to.
-            else if(winner.isPresent()&&state.player()==1)
-                wins = 1;
+            if (winner.isPresent())
+                wins = 1; // CONSIDER check that the winner is the correct player. We shouldn't need to.
+
             else wins=0;// a draw.
         }
     }

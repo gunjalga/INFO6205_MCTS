@@ -20,11 +20,11 @@ public class MCTS {
             root = new TicTacToeNode(takeMove(root, 1));
 //        root=new TicTacToeNode(takeMove(root,0));
 //        root=new TicTacToeNode(takeMove(root,1));
-            for (int i = 0; i < 2000; i++) {
+            for (int i = 0; i < 1000; i++) {
 //            Node<TicTacToe> root1 = root.selectChild();
 //            if fully expanded then select or add child
                 Node<TicTacToe> temp = selection(root);
-                if (temp != null && !temp.state().isTerminal()) {
+                if (temp != null ) {
                     temp.simulateRandom();
                     backpropagate(temp);
                 }
@@ -34,17 +34,27 @@ public class MCTS {
 
             }
 //            Position computerMovePosition=root.selectChild().state().position();
+
             Node<TicTacToe> child=root.selectChild();
             System.out.println(child.state().position().render());
-            root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
+            if(!root.state().isTerminal()){
+                root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
+            }else{
+                break;
+            }
+
 
         }
+        int winner= root.state().player()-1;
+        System.out.println("Winner:"+winner);
         // This is where you process the MCTS to try to win the game.
     }
 
     public static Node<TicTacToe> selection(Node<TicTacToe> root){
-        if(root.isFullyExpanded()){
+        if(root.isFullyExpanded() && !root.state().isTerminal()){
             return selection(root.selectChild());
+        }else if(root.state().winner().isPresent()){
+            return root;
         }
 
         return root.addChild();
@@ -52,9 +62,11 @@ public class MCTS {
 
     }
     public static void backpropagate(Node<TicTacToe> node){
+        Node<TicTacToe>leafNode = node;
+        int tempWins= leafNode.wins();
         while(node.getParent()!=null){
-
-            node.getParent().addWins(node.wins());
+            tempWins=-tempWins;
+            node.getParent().addWins(tempWins);
             node.getParent().addPlayouts(1);
             node= node.getParent();
         }
