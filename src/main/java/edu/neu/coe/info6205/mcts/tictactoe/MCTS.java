@@ -18,10 +18,8 @@ public class MCTS {
 
         while(!root.state().isTerminal()) {
             root = new TicTacToeNode(takeMove(root, 1));
-//        root=new TicTacToeNode(takeMove(root,0));
-//        root=new TicTacToeNode(takeMove(root,1));
+
             for (int i = 0; i < 1000; i++) {
-//            Node<TicTacToe> root1 = root.selectChild();
 //            if fully expanded then select or add child
                 Node<TicTacToe> temp = selection(root);
                 if (temp != null ) {
@@ -88,4 +86,8 @@ public class MCTS {
         return new TicTacToe(). new TicTacToeState(root.state().position());
     }
     private final Node<TicTacToe> root;
+
+    public Node<TicTacToe> getRoot() {
+        return root;
+    }
 }

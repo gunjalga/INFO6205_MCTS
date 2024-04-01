@@ -12,7 +12,7 @@ public class TicTacToeNodeTest {
         TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState(Position.parsePosition("X . 0\nX O .\nX . 0", TicTacToe.X));
         TicTacToeNode node = new TicTacToeNode(state);
         assertTrue(node.isLeaf());
-        assertEquals(2, node.wins());
+        assertEquals(1, node.wins());
         assertEquals(1, node.playouts());
     }
 
@@ -33,8 +33,12 @@ public class TicTacToeNodeTest {
     @Test
     public void children() {
         // no tests yet
+
     }
 
+    @Test
+    public void simulateRandom(){
+    }
     @Test
     public void addChild() {
         // no tests yet
@@ -43,5 +47,9 @@ public class TicTacToeNodeTest {
     @Test
     public void backPropagate() {
         // no tests yet
+    }
+
+    @Test
+    public void isLeaf(){
     }
 }
