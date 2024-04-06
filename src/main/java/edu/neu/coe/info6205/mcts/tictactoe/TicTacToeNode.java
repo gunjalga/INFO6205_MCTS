@@ -59,7 +59,7 @@ public class TicTacToeNode implements Node<TicTacToe> {
 
 
     }
-//    /**
+    //    /**
 //     * Method to add a child to this Node.
 //     *
 //     * @param state the State for the new chile.
@@ -92,14 +92,7 @@ public class TicTacToeNode implements Node<TicTacToe> {
 
         }
         return newNode;
-//        State<TicTacToe> randomState=simulateRamdom(state);
-//        Node<TicTacToe> randomNode= new TicTacToeNode(randomState);
-//        Node<TicTacToe> newNode = new TicTacToeNode(state);
-//        newNode.updateWins(randomNode.wins());
-//        newNode.updatePlayouts(randomNode.playouts());
-//        newNode.updateParent(this);
-//        children.add(newNode);
-//        return newNode;
+//
     }
 
     public Node<TicTacToe> selectChild() {
