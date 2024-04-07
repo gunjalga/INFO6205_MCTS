@@ -13,6 +13,12 @@ import java.util.Scanner;
 public class MCTS {
 
     public static void main(String[] args) {
+
+        startTicTacToe();
+        // This is where you process the MCTS to try to win the game.
+    }
+
+    public static void startTicTacToe(){
         MCTS mcts = new MCTS(new TicTacToeNode(new TicTacToe().new TicTacToeState()));
         Node<TicTacToe> root = mcts.root;
 
@@ -45,7 +51,6 @@ public class MCTS {
         }
         int winner= root.state().player()-1;
         System.out.println("Winner:"+winner);
-        // This is where you process the MCTS to try to win the game.
     }
 
     public static Node<TicTacToe> selection(Node<TicTacToe> root){
