@@ -13,4 +13,9 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
     public int opener() {
         return 0;
     }
+
+    public static void main(String[] args) {
+        Position p = Position.startingPostion();
+        System.out.println(p.render());
+    }
 }
