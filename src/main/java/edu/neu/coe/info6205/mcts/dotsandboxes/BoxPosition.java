@@ -1,9 +1,9 @@
 package edu.neu.coe.info6205.mcts.dotsandboxes;
 
-public class Position {
+public class BoxPosition {
     Box[][] grid;
     private final static int gridSize = 3;
-    static Position startingPostion (){
+    static BoxPosition startingPostion (){
         Box[][] matrix = new Box[gridSize][gridSize];
         for (int i =0;i<gridSize;i++){
             for (int j=0;j<gridSize;j++){
@@ -13,10 +13,10 @@ public class Position {
                 else matrix[i][j]=new Box();
             }
         }
-        return new Position(matrix);
+        return new BoxPosition(matrix);
     }
 
-    Position(Box[][] grid){
+    public BoxPosition(Box[][] grid){
         this.grid=grid;
     }
 
@@ -68,6 +68,35 @@ public class Position {
         }
 
         return sb.toString();
+    }
+
+    public BoxPosition move(int x, int y,String direction){
+        if(direction.toLowerCase().equals("left")){
+            if(y>0){
+                grid[x][y-1].right=true;
+            }
+            grid[x][y].left=true;
+        }else if(direction.toLowerCase().equals("right")){
+            if(y<gridSize-1){
+                grid[x][y+1].left=true;
+            }
+            grid[x][y].right=true;
+        }else if(direction.toLowerCase().equals("top")){
+            if(x>0){
+                grid[x-1][y].bottom=true;
+            }
+            grid[x][y].top=true;
+        }else if(direction.toLowerCase().equals("bottom")){
+            if(x<gridSize-1){
+                grid[x+1][y].top=true;
+            }
+            grid[x][y].bottom=true;
+        }else{
+            System.out.println("Please enter valid direction");
+        }
+
+
+        return new BoxPosition(grid);
     }
 
 }
