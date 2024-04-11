@@ -9,12 +9,13 @@ public class Box {
         this.bottom=false;
         this.right=false;
         this.left=false;
-        this.owner=0;
+        this.owner=-1;
     }
-    Box(boolean top,boolean bottom, boolean right, boolean left){
+    Box(boolean top,boolean bottom, boolean right, boolean left, int owner){
         this.top=top;
         this.bottom=bottom;
         this.right=right;
         this.left=left;
+        this.owner=owner;
     }
 }

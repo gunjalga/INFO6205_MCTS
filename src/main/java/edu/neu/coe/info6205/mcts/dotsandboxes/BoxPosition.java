@@ -1,24 +1,37 @@
 package edu.neu.coe.info6205.mcts.dotsandboxes;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class BoxPosition {
     Box[][] grid;
-//    final int last;
+    final int last;
     private final static int gridSize = 3;
     static BoxPosition startingPostion (){
         Box[][] matrix = new Box[gridSize][gridSize];
         for (int i =0;i<gridSize;i++){
             for (int j=0;j<gridSize;j++){
-                if(i==2&&j==2){
-                    matrix[i][j]=new Box(true,true,true,true);
-                }
-                else matrix[i][j]=new Box();
+//                if(i==2&&j==2){
+//                    matrix[i][j]=new Box(true,true,true,true,-1);
+//                }
+//                else
+                    matrix[i][j]=new Box();
             }
         }
-        return new BoxPosition(matrix);
+        return new BoxPosition(matrix, -1);
     }
 
-    public BoxPosition(Box[][] grid){
+    public BoxPosition(Box[][] grid, int last){
         this.grid=grid;
+        this.last=last;
+    }
+
+    private Box[][] copyGrid() {
+        Box[][] result = new Box[gridSize][gridSize];
+        for (int i = 0; i < gridSize; i++)
+            result[i] = Arrays.copyOf(grid[i], gridSize);
+        return result;
     }
 
     public String render() {
@@ -109,7 +122,31 @@ public class BoxPosition {
         }
 
 
-        return new BoxPosition(grid);
+        return new BoxPosition(grid,player);
+    }
+
+    public List<Box> moves(int player){
+        if (player == last) throw new RuntimeException("consecutive moves by same player: " + player);
+        List<Box> result = new ArrayList<>();
+        for (int i = 0; i < gridSize; i++)
+            for (int j = 0; j < gridSize; j++)
+                if (grid[i][j].owner < 0) {// TO BE IMPLEMENTED
+                    result.add(new Box(grid[i][j].top, grid[i][j].bottom, grid[i][j].right,grid[i][j].left,grid[i][j].owner));
+//                    System.out.println(Arrays.toString(new int[]{i, j}));
+                }
+        return result;
+    }
+
+    boolean full(){
+        int count=0;
+        for(int i=0;i<gridSize;i++){
+            for(int j=0;j<gridSize;j++){
+                if(grid[i][j].owner>-1){
+                    count++;
+                }
+            }
+        }
+        return count==9;
     }
 
 }
