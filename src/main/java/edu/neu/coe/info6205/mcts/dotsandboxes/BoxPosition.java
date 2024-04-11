@@ -2,6 +2,7 @@ package edu.neu.coe.info6205.mcts.dotsandboxes;
 
 public class BoxPosition {
     Box[][] grid;
+//    final int last;
     private final static int gridSize = 3;
     static BoxPosition startingPostion (){
         Box[][] matrix = new Box[gridSize][gridSize];
@@ -49,9 +50,13 @@ public class BoxPosition {
                     } else {
                         sb.append(" ");
                     }
-                    if(i==2&&j==2){
-                        sb.append("p1");
-                    }else{
+//                    if(i==2&&j==2){
+//                        sb.append("p1");
+//                    }
+                    if(grid[i][j].left && grid[i][j].right && grid[i][j].top && grid[i][j].bottom){
+                        sb.append(grid[i][j].owner);
+                    }
+                    else{
                         sb.append("  ");
                     }
                     if(j==gridSize-1) {
@@ -70,8 +75,12 @@ public class BoxPosition {
         return sb.toString();
     }
 
-    public BoxPosition move(int x, int y,String direction){
+    public BoxPosition move(int x, int y,String direction,int player){
+
         if(direction.toLowerCase().equals("left")){
+            if(grid[x][y].left==true){
+                throw new RuntimeException("This move has been already made");
+            }
             if(y>0){
                 grid[x][y-1].right=true;
             }
@@ -93,6 +102,10 @@ public class BoxPosition {
             grid[x][y].bottom=true;
         }else{
             System.out.println("Please enter valid direction");
+        }
+
+        if(grid[x][y].left && grid[x][y].right && grid[x][y].top && grid[x][y].bottom){
+            grid[x][y].owner=player;
         }
 
 
