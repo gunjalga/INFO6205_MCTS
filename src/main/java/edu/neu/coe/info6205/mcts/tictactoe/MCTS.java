@@ -40,12 +40,12 @@ public class MCTS {
 //            Position computerMovePosition=root.selectChild().state().position();
 
             Node<TicTacToe> child=root.selectChild();
-            System.out.println(child.state().position().render());
-            if(!root.state().isTerminal()){
-                root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
-            }else{
-                break;
-            }
+//            System.out.println(child.state().position().render());
+//            if(!root.state().isTerminal()){
+//                root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
+//            }else{
+//                break;
+//            }
 
 
         }
@@ -88,7 +88,8 @@ public class MCTS {
     }
 
     public static State makeComputerMove(Node<TicTacToe> root,Position position){
-        return new TicTacToe(). new TicTacToeState(root.state().position());
+//        return new TicTacToe(). new TicTacToeState(root.state().position());
+        return null;
     }
     private final Node<TicTacToe> root;
 

@@ -67,6 +67,7 @@ public class BoxPosition {
 //                        sb.append("p1");
 //                    }
                     if(grid[i][j].left && grid[i][j].right && grid[i][j].top && grid[i][j].bottom){
+                        sb.append("p");
                         sb.append(grid[i][j].owner);
                     }
                     else{
@@ -128,11 +129,39 @@ public class BoxPosition {
     public List<Box> moves(int player){
         if (player == last) throw new RuntimeException("consecutive moves by same player: " + player);
         List<Box> result = new ArrayList<>();
+        Box[][] copy=grid;
         for (int i = 0; i < gridSize; i++)
             for (int j = 0; j < gridSize; j++)
-                if (grid[i][j].owner < 0) {// TO BE IMPLEMENTED
-                    result.add(new Box(grid[i][j].top, grid[i][j].bottom, grid[i][j].right,grid[i][j].left,grid[i][j].owner));
-//                    System.out.println(Arrays.toString(new int[]{i, j}));
+                if (copy[i][j].owner < 0) {
+                    Box temp=copy[i][j];
+                    if(!temp.left){
+                        if(j>0){
+                            copy[i][j-1].right=true;
+                        }
+                        copy[i][j].left=true;
+                        result.add(new Box(temp.top, temp.bottom, temp.right, true, temp.owner));
+                    }
+                    if(!temp.right){
+                        if(j<gridSize-1){
+                            copy[i][j+1].left=true;
+                        }
+                        copy[i][j].right=true;
+                        result.add(new Box(temp.top, temp.bottom, true, temp.left, temp.owner));
+                    }
+                    if(!temp.top){
+                        if(i>0){
+                            copy[i-1][j].bottom=true;
+                        }
+                        copy[i][j].top=true;
+                        result.add(new Box(true, temp.bottom, temp.right, temp.left, temp.owner));
+                    }
+                    if(!temp.bottom){
+                        if(i<gridSize-1){
+                            copy[i+1][j].top=true;
+                        }
+                        copy[i][j].bottom=true;
+                        result.add(new Box(temp.top, true, temp.right, temp.left, temp.owner));
+                    }
                 }
         return result;
     }
@@ -149,4 +178,8 @@ public class BoxPosition {
         return count==9;
     }
 
+    @Override
+    public String toString() {
+        return this.render();
+    }
 }

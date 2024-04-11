@@ -1,6 +1,7 @@
 package edu.neu.coe.info6205.mcts.core;
 
 import edu.neu.coe.info6205.bqs.UnorderedIterator;
+import edu.neu.coe.info6205.mcts.dotsandboxes.BoxPosition;
 import edu.neu.coe.info6205.mcts.tictactoe.Position;
 
 import java.util.Collection;
@@ -28,6 +29,7 @@ public interface State<G extends Game> {
      */
     boolean isTerminal();
     Position position();
+    BoxPosition boxPosition();
     /**
      * Method to determine the player who plays to this State.
      * The first player to play is considered to be "white" by analogy with chess.

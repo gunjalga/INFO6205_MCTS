@@ -3,6 +3,7 @@ package edu.neu.coe.info6205.mcts.tictactoe;
 import edu.neu.coe.info6205.mcts.core.Game;
 import edu.neu.coe.info6205.mcts.core.Move;
 import edu.neu.coe.info6205.mcts.core.State;
+import edu.neu.coe.info6205.mcts.dotsandboxes.BoxPosition;
 
 import java.util.*;
 
@@ -164,6 +165,11 @@ public class TicTacToe implements Game<TicTacToe> {
          */
         public Position position() {
             return this.position;
+        }
+
+        @Override
+        public BoxPosition boxPosition() {
+            return null;
         }
 
         /**
