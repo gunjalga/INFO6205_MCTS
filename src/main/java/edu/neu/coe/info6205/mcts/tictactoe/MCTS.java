@@ -3,8 +3,10 @@ package edu.neu.coe.info6205.mcts.tictactoe;
 import edu.neu.coe.info6205.mcts.core.Move;
 import edu.neu.coe.info6205.mcts.core.Node;
 import edu.neu.coe.info6205.mcts.core.State;
+import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxes;
 
 import java.util.Collection;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -13,8 +15,10 @@ import java.util.Scanner;
 public class MCTS {
 
     public static void main(String[] args) {
-
-        startTicTacToe();
+        DotsAndBoxes dotsAndBoxes= new DotsAndBoxes(new Random());
+        String[] ars={"",""};
+        dotsAndBoxes.main(ars);
+//        startTicTacToe();
         // This is where you process the MCTS to try to win the game.
     }
 

@@ -29,8 +29,12 @@ public class BoxPosition {
 
     private Box[][] copyGrid() {
         Box[][] result = new Box[gridSize][gridSize];
-        for (int i = 0; i < gridSize; i++)
-            result[i] = Arrays.copyOf(grid[i], gridSize);
+        for (int i = 0; i < gridSize; i++){
+            for(int j=0;j<gridSize;j++){
+                result[i][j]=new Box(grid[i][j]);
+            }
+        }
+//            result[i] = Arrays.copyOf(grid[i], gridSize);
         return result;
     }
 
@@ -129,7 +133,7 @@ public class BoxPosition {
     public List<Box> moves(int player){
         if (player == last) throw new RuntimeException("consecutive moves by same player: " + player);
         List<Box> result = new ArrayList<>();
-        Box[][] copy=grid;
+        Box[][] copy=copyGrid();
         for (int i = 0; i < gridSize; i++)
             for (int j = 0; j < gridSize; j++)
                 if (copy[i][j].owner < 0) {
@@ -139,28 +143,32 @@ public class BoxPosition {
                             copy[i][j-1].right=true;
                         }
                         copy[i][j].left=true;
-                        result.add(new Box(temp.top, temp.bottom, temp.right, true, temp.owner));
+                        result.add(new Box(i,j,"left"));
+//                        result.add(new Box(temp.top, temp.bottom, temp.right, true, temp.owner,i,j));
                     }
                     if(!temp.right){
                         if(j<gridSize-1){
                             copy[i][j+1].left=true;
                         }
                         copy[i][j].right=true;
-                        result.add(new Box(temp.top, temp.bottom, true, temp.left, temp.owner));
+                        result.add(new Box(i,j,"right"));
+//                        result.add(new Box(temp.top, temp.bottom, true, temp.left, temp.owner,i,j));
                     }
                     if(!temp.top){
                         if(i>0){
                             copy[i-1][j].bottom=true;
                         }
                         copy[i][j].top=true;
-                        result.add(new Box(true, temp.bottom, temp.right, temp.left, temp.owner));
+                        result.add(new Box(i,j,"top"));
+//                        result.add(new Box(true, temp.bottom, temp.right, temp.left, temp.owner,i,j));
                     }
                     if(!temp.bottom){
                         if(i<gridSize-1){
                             copy[i+1][j].top=true;
                         }
                         copy[i][j].bottom=true;
-                        result.add(new Box(temp.top, true, temp.right, temp.left, temp.owner));
+                        result.add(new Box(i,j,"bottom"));
+//                        result.add(new Box(temp.top, true, temp.right, temp.left, temp.owner,i,j));
                     }
                 }
         return result;

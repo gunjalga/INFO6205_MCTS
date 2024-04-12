@@ -15,6 +15,11 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
     public static final int O = 0;
     public static final int blank = -1;
 
+    private final Random random;
+    public DotsAndBoxes(Random random){
+        this.random=random;
+    }
+
     class DotsAndBoxesState implements State<DotsAndBoxes>{
         private final BoxPosition position;
 
@@ -66,14 +71,32 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
             List<Box> moves = position.moves(player);
             ArrayList<Move<DotsAndBoxes>> list = new ArrayList<>();
             System.out.println(list);
-//            for (Box[] coordinates : moves) list.add(new TicTacToe.TicTacToeMove(player, coordinates[0], coordinates[1]));
-            return null;
+            String direction="";
+            for (Box coordinates : moves){
+                if(coordinates.right){
+                    direction="right";
+                }
+                if(coordinates.left){
+                    direction+="left";
+                }
+                if(coordinates.top){
+                    direction+="top";
+                }
+                if(coordinates.bottom){
+                    direction+="bottom";
+                }
+                list.add(new DotsAndBoxesMove(coordinates.x, coordinates.y,direction,player));
+            }
+            return list;
         }
+
 
         @Override
         public State<DotsAndBoxes> next(Move<DotsAndBoxes> move) {
-            return null;
+            DotsAndBoxesMove dotsAndBoxesMove=(DotsAndBoxesMove) move;
+            return new DotsAndBoxesState(position.move(dotsAndBoxesMove.i,dotsAndBoxesMove.j,dotsAndBoxesMove.direction, dotsAndBoxesMove.player()));
         }
+//        private final BoxPosition position;
     }
 
     static class DotsAndBoxesMove implements Move<DotsAndBoxes>{
@@ -85,8 +108,16 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
 
         public DotsAndBoxesMove(int i,int j, String direction, int player){
             this.player=player;
+            this.i=i;
+            this.j=j;
+            this.direction=direction;
         }
-        private final int player;
+
+        Box move(){
+            return new Box(this.i,this.j,this.direction);
+        }
+        private final int i,j,player;
+        String direction;
     }
     @Override
     public State<DotsAndBoxes> start() {
@@ -98,7 +129,8 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
         return 0;
     }
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
+
         BoxPosition p = BoxPosition.startingPostion();
 //        System.out.println(p.render());
         BoxPosition p1=p.move(1,1,"left",0);
@@ -106,11 +138,19 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
 
         BoxPosition p2=p1.move(1,1,"right",1);
         BoxPosition p3=p2.move(1,1,"top",0);
-        BoxPosition p4=p3.move(1,1,"bottom",0);
-        System.out.println(p4.render());
+//        BoxPosition p4=p3.move(1,1,"bottom",0);
+//        System.out.println(p4.render());
 
-        List<Box> moves=p4.moves(1);
+        List<Box> moves=p3.moves(1);
         System.out.println(moves.size());
+
+        DotsAndBoxesState state= new DotsAndBoxesState(p3);
+
+        Collection<Move<DotsAndBoxes>> randomMoves=state.moves(1);
+        List<Move<DotsAndBoxes>> listFromCollection = new ArrayList<>(randomMoves);
+        State<DotsAndBoxes> newState=state.next(listFromCollection.get(0));
+        System.out.println(newState.boxPosition().render());
+
     }
 
     static BoxPosition startingPosition() {
