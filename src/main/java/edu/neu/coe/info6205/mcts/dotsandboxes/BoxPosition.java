@@ -197,7 +197,28 @@ public class BoxPosition {
     }
 
     public Optional<Integer> winner() {
-        if (count > 4) return Optional.of(last);
+        int count=0;
+        int winner;
+        int p0=0;
+        int p1=0;
+        for(int i=0;i<gridSize;i++){
+            for(int j=0;j<gridSize;j++){
+                if(grid[i][j].owner>-1){
+                    count++;
+                    if(grid[i][j].owner==0){
+                        p0++;
+                    }else if(grid[i][j].owner==1){
+                        p1++;
+                    }
+                }
+            }
+        }
+        if(p0>p1){
+            winner=0;
+        }else{
+            winner=1;
+        }
+        if (count ==9) return Optional.of(winner);
         return Optional.empty();
     }
 

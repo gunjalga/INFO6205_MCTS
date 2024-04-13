@@ -155,6 +155,7 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
     public static void main(String[] args) {
         State<DotsAndBoxes> state = new DotsAndBoxes().runGame();
         System.out.println(state.boxPosition().render());
+        System.out.println("Winner:"+state.boxPosition().winner().get());
 //        BoxPosition p = BoxPosition.startingPostion();
 ////        System.out.println(p.render());
 //        BoxPosition p1=p.move(2,0,"left",0);
