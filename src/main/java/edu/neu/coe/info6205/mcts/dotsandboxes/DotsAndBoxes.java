@@ -71,7 +71,7 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
 
         @Override
         public Collection<Move<DotsAndBoxes>> moves(int player) {
-            if (player == position.last) throw new RuntimeException("consecutive moves by same player: " + player);
+//            if (player == position.last) throw new RuntimeException("consecutive moves by same player: " + player);
             List<Box> moves = position.moves(player);
             ArrayList<Move<DotsAndBoxes>> list = new ArrayList<>();
             String direction="";
@@ -107,10 +107,17 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
         int player = 0;
         while (!state.isTerminal()) {
             count++;
-            state = state.next(state.chooseMove(player));
+//
+            System.out.println( "Player:"+player);
+            State<DotsAndBoxes> newState = state.next(state.chooseMove(player));
+            player=newState.boxPosition().last;
+            state=newState;
             System.out.println(state.boxPosition().render());
+
+//            if(switchPlayer)
             player = 1 - player;
             System.out.println("Move no:"+count+" Player:"+player);
+
         }
 
         return state;
@@ -132,7 +139,7 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
         Box move(){
             return new Box(this.i,this.j,this.direction);
         }
-        private final int i,j,player;
+        final int i,j,player;
         String direction;
     }
     @Override
@@ -146,9 +153,9 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
     }
 
     public static void main(String[] args) {
-        State<DotsAndBoxes> state = new DotsAndBoxes(52).runGame();
+        State<DotsAndBoxes> state = new DotsAndBoxes().runGame();
         System.out.println(state.boxPosition().render());
-        BoxPosition p = BoxPosition.startingPostion();
+//        BoxPosition p = BoxPosition.startingPostion();
 ////        System.out.println(p.render());
 //        BoxPosition p1=p.move(2,0,"left",0);
 ////        System.out.println(p1.render());

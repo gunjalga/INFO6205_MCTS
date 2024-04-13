@@ -9,6 +9,9 @@ public class BoxPosition {
     Box[][] grid;
     final int last;
     private final static int gridSize = 3;
+    public int getGridSize(){
+        return gridSize;
+    }
     static BoxPosition startingPostion (){
         Box[][] matrix = new Box[gridSize][gridSize];
         for (int i =0;i<gridSize;i++){
@@ -96,7 +99,7 @@ public class BoxPosition {
     }
 
     public BoxPosition move(int x, int y,String direction,int player){
-
+        int repeatPlayer= player;
         if(direction.toLowerCase().equals("left")){
 //            if(grid[x][y].left==true){
 //                throw new RuntimeException("This move has been already made");
@@ -105,6 +108,7 @@ public class BoxPosition {
                 grid[x][y-1].right=true;
                 if(grid[x][y-1].left && grid[x][y-1].right && grid[x][y-1].top && grid[x][y-1].bottom){
                     grid[x][y-1].owner=player;
+                    repeatPlayer=1-player;
                 }
             }
             grid[x][y].left=true;
@@ -113,6 +117,7 @@ public class BoxPosition {
                 grid[x][y+1].left=true;
                 if(grid[x][y+1].left && grid[x][y+1].right && grid[x][y+1].top && grid[x][y+1].bottom){
                     grid[x][y+1].owner=player;
+                    repeatPlayer=1-player;
                 }
             }
             grid[x][y].right=true;
@@ -121,6 +126,7 @@ public class BoxPosition {
                 grid[x-1][y].bottom=true;
                 if(grid[x-1][y].left && grid[x-1][y].right && grid[x-1][y].top && grid[x-1][y].bottom){
                     grid[x-1][y].owner=player;
+                    repeatPlayer=1-player;
                 }
             }
             grid[x][y].top=true;
@@ -129,6 +135,7 @@ public class BoxPosition {
                 grid[x+1][y].top=true;
                 if(grid[x+1][y].left && grid[x+1][y].right && grid[x+1][y].top && grid[x+1][y].bottom){
                     grid[x+1][y].owner=player;
+                    repeatPlayer=1-player;
                 }
             }
             grid[x][y].bottom=true;
@@ -138,14 +145,15 @@ public class BoxPosition {
 
         if(grid[x][y].left && grid[x][y].right && grid[x][y].top && grid[x][y].bottom){
             grid[x][y].owner=player;
+            repeatPlayer=1-player;
         }
 
 
-        return new BoxPosition(grid,player,count+1);
+        return new BoxPosition(grid,repeatPlayer,count+1);
     }
 
     public List<Box> moves(int player){
-        if (player == last) throw new RuntimeException("consecutive moves by same player: " + player);
+//        if (player == last) throw new RuntimeException("consecutive moves by same player: " + player);
         List<Box> result = new ArrayList<>();
         Box[][] copy=copyGrid();
         for (int i = 0; i < gridSize; i++)
