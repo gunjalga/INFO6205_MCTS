@@ -3,6 +3,7 @@ package edu.neu.coe.info6205.mcts.dotsandboxes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class BoxPosition {
     Box[][] grid;
@@ -19,12 +20,13 @@ public class BoxPosition {
                     matrix[i][j]=new Box();
             }
         }
-        return new BoxPosition(matrix, -1);
+        return new BoxPosition(matrix, -1, 0);
     }
 
-    public BoxPosition(Box[][] grid, int last){
+    public BoxPosition(Box[][] grid, int last,int count){
         this.grid=grid;
         this.last=last;
+        this.count=count;
     }
 
     private Box[][] copyGrid() {
@@ -139,7 +141,7 @@ public class BoxPosition {
         }
 
 
-        return new BoxPosition(grid,player);
+        return new BoxPosition(grid,player,count+1);
     }
 
     public List<Box> moves(int player){
@@ -186,6 +188,11 @@ public class BoxPosition {
         return result;
     }
 
+    public Optional<Integer> winner() {
+        if (count > 4) return Optional.of(last);
+        return Optional.empty();
+    }
+
     boolean full(){
         int count=0;
         for(int i=0;i<gridSize;i++){
@@ -197,7 +204,7 @@ public class BoxPosition {
         }
         return count==9;
     }
-
+    private final int count;
     @Override
     public String toString() {
         return this.render();
