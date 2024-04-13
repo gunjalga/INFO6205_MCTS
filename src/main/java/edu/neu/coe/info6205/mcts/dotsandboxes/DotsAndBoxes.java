@@ -102,13 +102,17 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
 //        private final BoxPosition position;
     }
     State<DotsAndBoxes> runGame() {
+        int count=0;
         State<DotsAndBoxes> state = start();
         int player = 0;
         while (!state.isTerminal()) {
+            count++;
             state = state.next(state.chooseMove(player));
             System.out.println(state.boxPosition().render());
             player = 1 - player;
+            System.out.println("Move no:"+count+" Player:"+player);
         }
+
         return state;
     }
     static class DotsAndBoxesMove implements Move<DotsAndBoxes>{
@@ -144,15 +148,15 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
     public static void main(String[] args) {
         State<DotsAndBoxes> state = new DotsAndBoxes(52).runGame();
         System.out.println(state.boxPosition().render());
-//        BoxPosition p = BoxPosition.startingPostion();
+        BoxPosition p = BoxPosition.startingPostion();
 ////        System.out.println(p.render());
-//        BoxPosition p1=p.move(1,1,"left",0);
+//        BoxPosition p1=p.move(2,0,"left",0);
 ////        System.out.println(p1.render());
 //
-//        BoxPosition p2=p1.move(1,1,"right",1);
-//        BoxPosition p3=p2.move(1,1,"top",0);
-////        BoxPosition p4=p3.move(1,1,"bottom",0);
-////        System.out.println(p4.render());
+//        BoxPosition p2=p1.move(2,0,"right",1);
+//        BoxPosition p3=p2.move(2,0,"top",0);
+//        BoxPosition p4=p3.move(2,0,"bottom",1);
+//        System.out.println(p4.render());
 //
 //        List<Box> moves=p3.moves(1);
 //        System.out.println(moves.size());

@@ -96,26 +96,38 @@ public class BoxPosition {
     public BoxPosition move(int x, int y,String direction,int player){
 
         if(direction.toLowerCase().equals("left")){
-            if(grid[x][y].left==true){
-                throw new RuntimeException("This move has been already made");
-            }
+//            if(grid[x][y].left==true){
+//                throw new RuntimeException("This move has been already made");
+//            }
             if(y>0){
                 grid[x][y-1].right=true;
+                if(grid[x][y-1].left && grid[x][y-1].right && grid[x][y-1].top && grid[x][y-1].bottom){
+                    grid[x][y-1].owner=player;
+                }
             }
             grid[x][y].left=true;
         }else if(direction.toLowerCase().equals("right")){
             if(y<gridSize-1){
                 grid[x][y+1].left=true;
+                if(grid[x][y+1].left && grid[x][y+1].right && grid[x][y+1].top && grid[x][y+1].bottom){
+                    grid[x][y+1].owner=player;
+                }
             }
             grid[x][y].right=true;
         }else if(direction.toLowerCase().equals("top")){
             if(x>0){
                 grid[x-1][y].bottom=true;
+                if(grid[x-1][y].left && grid[x-1][y].right && grid[x-1][y].top && grid[x-1][y].bottom){
+                    grid[x-1][y].owner=player;
+                }
             }
             grid[x][y].top=true;
         }else if(direction.toLowerCase().equals("bottom")){
             if(x<gridSize-1){
                 grid[x+1][y].top=true;
+                if(grid[x+1][y].left && grid[x+1][y].right && grid[x+1][y].top && grid[x+1][y].bottom){
+                    grid[x+1][y].owner=player;
+                }
             }
             grid[x][y].bottom=true;
         }else{
