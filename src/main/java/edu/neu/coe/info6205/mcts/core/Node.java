@@ -60,23 +60,23 @@ public interface Node<G extends Game> {
 //     *
 //     * @param state the State for the new chile.
 //     */
-    Node<TicTacToe> addChild();
+    Node<G> addChild();
 
     /**
      * @return the score for this Node and its descendents a win is worth 2 points, a draw is worth 1 point.
      */
     int wins();
-    Node<TicTacToe> selectChild();
+    Node<G> selectChild();
 
     void updateWins(int wins);
-    void updateParent(Node<TicTacToe> node);
+    void updateParent(Node<G> node);
     boolean isFullyExpanded();
 
     void simulateRandom();
 
     void addWins(int wins);
     void addPlayouts(int playouts);
-    Node<TicTacToe> getParent();
+    Node<G> getParent();
     void updatePlayouts(int playouts);
     /**
      * @return the number of playouts evaluated (including this node). A leaf node will have a playouts value of 1.

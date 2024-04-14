@@ -1,9 +1,11 @@
 package edu.neu.coe.info6205.mcts.tictactoe;
 
+import edu.neu.coe.info6205.mcts.core.Game;
 import edu.neu.coe.info6205.mcts.core.Move;
 import edu.neu.coe.info6205.mcts.core.Node;
 import edu.neu.coe.info6205.mcts.core.State;
 import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxes;
+import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxesNode;
 
 import java.util.Collection;
 import java.util.Random;
@@ -12,13 +14,14 @@ import java.util.Scanner;
 /**
  * Class to represent a Monte Carlo Tree Search for TicTacToe.
  */
-public class MCTS {
+public class MCTS<G extends Game > {
 
     public static void main(String[] args) {
-        DotsAndBoxes dotsAndBoxes= new DotsAndBoxes(new Random());
-        String[] ars={"",""};
-        dotsAndBoxes.main(ars);
-//        startTicTacToe();
+//        MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
+//        System.out.println(mcts.root.state().boxPosition().render());
+//        Node<DotsAndBoxes>n1=mcts.root.addChild();
+//        System.out.println(n1.state().boxPosition().render());
+        startTicTacToe();
         // This is where you process the MCTS to try to win the game.
     }
 
@@ -44,12 +47,12 @@ public class MCTS {
 //            Position computerMovePosition=root.selectChild().state().position();
 
             Node<TicTacToe> child=root.selectChild();
-//            System.out.println(child.state().position().render());
-//            if(!root.state().isTerminal()){
-//                root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
-//            }else{
-//                break;
-//            }
+            System.out.println(child.state().position().render());
+            if(!root.state().isTerminal()){
+                root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
+            }else{
+                break;
+            }
 
 
         }
@@ -79,7 +82,7 @@ public class MCTS {
         }
     }
 
-    public MCTS(Node<TicTacToe> root) {
+    public MCTS(Node<G> root) {
         this.root = root;
     }
     public static State takeMove(Node<TicTacToe> root,int player){
@@ -92,12 +95,12 @@ public class MCTS {
     }
 
     public static State makeComputerMove(Node<TicTacToe> root,Position position){
-//        return new TicTacToe(). new TicTacToeState(root.state().position());
-        return null;
+        return new TicTacToe(). new TicTacToeState(root.state().position());
+//        return null;
     }
-    private final Node<TicTacToe> root;
+    private final Node<G> root;
 
-    public Node<TicTacToe> getRoot() {
+    public Node<G> getRoot() {
         return root;
     }
 }

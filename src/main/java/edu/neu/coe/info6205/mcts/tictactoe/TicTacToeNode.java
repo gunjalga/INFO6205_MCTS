@@ -92,7 +92,14 @@ public class TicTacToeNode implements Node<TicTacToe> {
 
         }
         return newNode;
-//
+//        State<TicTacToe> randomState=simulateRamdom(state);
+//        Node<TicTacToe> randomNode= new TicTacToeNode(randomState);
+//        Node<TicTacToe> newNode = new TicTacToeNode(state);
+//        newNode.updateWins(randomNode.wins());
+//        newNode.updatePlayouts(randomNode.playouts());
+//        newNode.updateParent(this);
+//        children.add(newNode);
+//        return newNode;
     }
 
     public Node<TicTacToe> selectChild() {
@@ -104,7 +111,7 @@ public class TicTacToeNode implements Node<TicTacToe> {
 //            if(child.state().isTerminal()){
 //                uctScore=Double.NEGATIVE_INFINITY;
 //            }else{
-                uctScore = calculateUCTScore((TicTacToeNode) child);
+            uctScore = calculateUCTScore((TicTacToeNode) child);
 //            }
             if (uctScore > bestScore) {
                 bestScore = uctScore;

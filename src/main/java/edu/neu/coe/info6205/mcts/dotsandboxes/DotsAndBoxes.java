@@ -24,7 +24,7 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
     public DotsAndBoxes() {
         this(System.currentTimeMillis());
     }
-    class DotsAndBoxesState implements State<DotsAndBoxes>{
+    public class DotsAndBoxesState implements State<DotsAndBoxes>{
         private final BoxPosition position;
 
         public DotsAndBoxesState(BoxPosition boxPosition){
