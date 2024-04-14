@@ -56,8 +56,8 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
         @Override
         public int player() {
             return switch (position.last) {
-                case 0, -1 -> X;
-                case 1 -> O;
+                case 0, -1 -> O;
+                case 1 -> X;
                 default -> blank;
             };
         }
@@ -125,7 +125,7 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
 
         return state;
     }
-    static class DotsAndBoxesMove implements Move<DotsAndBoxes>{
+    public static class DotsAndBoxesMove implements Move<DotsAndBoxes>{
 
         @Override
         public int player() {

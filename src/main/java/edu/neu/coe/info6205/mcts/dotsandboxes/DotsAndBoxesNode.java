@@ -151,7 +151,7 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
             newState=temp;
             currentPlayer=1-currentPlayer;
         }
-        currentPlayer=1-currentPlayer;
+        currentPlayer=newState.winner().get();
         Node<DotsAndBoxes> tempNode = new DotsAndBoxesNode(newState);
         this.updatePlayouts(tempNode.playouts());
         if(newState.winner().isPresent()){
