@@ -118,7 +118,7 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
         if (isLeaf()) {
             playouts = 1;
             Optional<Integer> winner = state.winner();
-            if (winner.isPresent()&&winner.get()==0)
+            if (winner.isPresent())
                 wins = 1; // if computer wins
 
             else wins=0;// if human wins.

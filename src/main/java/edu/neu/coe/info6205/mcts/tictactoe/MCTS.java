@@ -26,11 +26,12 @@ public class MCTS<G extends Game > {
             Node<DotsAndBoxes> child=selectionNode(root);
             if(child!=null){
                 child.simulateRandom();
+                backPropagateBox(child);
             }
 
         }
         Node<DotsAndBoxes> child=root.selectChild();
-        System.out.println(child.state().position().render());
+        System.out.println(child.state().boxPosition().render());
 
 //        System.out.println(result.state().boxPosition().render());
 //        System.out.println(n1.state().boxPosition().render());
@@ -97,6 +98,16 @@ public class MCTS<G extends Game > {
 
     }
 
+    public static void backPropagateBox(Node<DotsAndBoxes> node){
+        Node<DotsAndBoxes>leafNode=node;
+        int tempWins= leafNode.wins();
+        while(node.getParent()!=null){
+            tempWins=-tempWins;
+            node.getParent().addWins(tempWins);
+            node.getParent().addPlayouts(1);
+            node= node.getParent();
+        }
+    }
     public static void backpropagate(Node<TicTacToe> node){
         Node<TicTacToe>leafNode = node;
         int tempWins= leafNode.wins();

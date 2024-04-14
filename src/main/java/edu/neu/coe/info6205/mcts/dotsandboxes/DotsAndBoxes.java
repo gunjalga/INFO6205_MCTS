@@ -64,7 +64,7 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
 
         @Override
         public Optional<Integer> winner() {
-            return Optional.empty();
+            return position.winner();
         }
 
         @Override
