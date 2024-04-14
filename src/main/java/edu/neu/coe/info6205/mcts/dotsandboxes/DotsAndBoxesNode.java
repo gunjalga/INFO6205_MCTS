@@ -3,13 +3,8 @@ package edu.neu.coe.info6205.mcts.dotsandboxes;
 import edu.neu.coe.info6205.mcts.core.Move;
 import edu.neu.coe.info6205.mcts.core.Node;
 import edu.neu.coe.info6205.mcts.core.State;
-import edu.neu.coe.info6205.mcts.tictactoe.TicTacToe;
-import edu.neu.coe.info6205.mcts.tictactoe.TicTacToeNode;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 
 public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
 
@@ -33,6 +28,12 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
 
     @Override
     public void backPropagate() {
+        playouts=0;
+        wins=0;
+        for(Node<DotsAndBoxes> child:children){
+            wins+=child.wins();
+            playouts+=child.playouts();
+        }
 
     }
 
@@ -52,20 +53,40 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
 
     @Override
     public Node<DotsAndBoxes> selectChild() {
-        return null;
+        double bestScore = Double.NEGATIVE_INFINITY;
+        List<Node<DotsAndBoxes>> bestChild = new ArrayList<>();
+        double uctScore;
+        for (Node<DotsAndBoxes> child : children) {
+//            if(child.state().isTerminal()){
+//                uctScore=Double.NEGATIVE_INFINITY;
+//            }else{
+            uctScore = calculateUCTScore((DotsAndBoxesNode) child);
+//            }
+            if (uctScore > bestScore) {
+                bestScore = uctScore;
+                bestChild.clear();
+                bestChild.add(child);
+            } else if (uctScore==bestScore) {
+                bestChild.add(child);
+            }
+        }
+        return bestChild.get(new Random().nextInt(bestChild.size()));
     }
 
     @Override
     public void updateWins(int wins) {
-
+        this.wins=wins;
     }
 
     public Node<DotsAndBoxes> addChild() {
 //        will add a child and simulate a random game
         Node<DotsAndBoxes> newNode=null;
-        for (Iterator<Move<DotsAndBoxes>> it = this.state.moveIterator(state.player()); it.hasNext(); )
+        State<DotsAndBoxes>temp=new DotsAndBoxes().new DotsAndBoxesState(this.state);
+
+        for (Iterator<Move<DotsAndBoxes>> it = temp.moveIterator(temp.player()); it.hasNext(); )
         {
-            State<DotsAndBoxes> newState = this.state.next(it.next());
+            State<DotsAndBoxes>tempCopy=new DotsAndBoxes().new DotsAndBoxesState(this.state);
+            State<DotsAndBoxes> newState = tempCopy.next(it.next());
             if(this.children().isEmpty()){
                 newNode=new DotsAndBoxesNode(newState);
                 newNode.updateParent(this);
@@ -76,7 +97,9 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
                 if(!it.hasNext()){
                     this.isFullyExpanded=true;
                 }
-                if(!this.children.stream().anyMatch(node->node.state().position().equals(newState.position()))){
+                if(!this.children.stream().anyMatch
+                        (node->node.state().boxPosition().
+                                equals(newState.boxPosition()))){
                     newNode=new DotsAndBoxesNode(newState);
                     newNode.updateParent(this);
                     children.add(newNode);
@@ -114,32 +137,49 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
 
     @Override
     public boolean isFullyExpanded() {
-        return false;
+        return isFullyExpanded;
     }
 
     @Override
     public void simulateRandom() {
-
+        int currentPlayer = this.state.player();
+        int levelPlayer = 1-currentPlayer;
+        State<DotsAndBoxes>newState=new DotsAndBoxes().new DotsAndBoxesState(this.state);;
+        while(!newState.isTerminal()){
+            State<DotsAndBoxes> temp=newState.next(newState.chooseMove(currentPlayer));
+            currentPlayer=temp.boxPosition().last;
+            newState=temp;
+            currentPlayer=1-currentPlayer;
+        }
+        currentPlayer=1-currentPlayer;
+        Node<DotsAndBoxes> tempNode = new DotsAndBoxesNode(newState);
+        this.updatePlayouts(tempNode.playouts());
+        if(newState.winner().isPresent()){
+            this.updateWins(levelPlayer==currentPlayer?tempNode.wins():-tempNode.wins());
+        }
+        else{
+            this.updateWins(0);
+        }
     }
 
     @Override
     public void addWins(int wins) {
-
+        this.wins+=wins;
     }
 
     @Override
     public void addPlayouts(int playouts) {
-
+        this.playouts+=playouts;
     }
 
     @Override
     public Node<DotsAndBoxes> getParent() {
-        return null;
+        return this.parent;
     }
 
     @Override
     public void updatePlayouts(int playouts) {
-
+        this.playouts=playouts;
     }
 
     private final State<DotsAndBoxes> state;

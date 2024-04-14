@@ -1,5 +1,7 @@
 package edu.neu.coe.info6205.mcts.dotsandboxes;
 
+import java.util.Objects;
+
 public class Box {
     boolean top=false,bottom=false,right=false,left=false;
     int owner,x,y;
@@ -43,4 +45,14 @@ public class Box {
         this.x = other.x;
         this.y = other.y;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Box box = (Box) o;
+        return top == box.top && bottom == box.bottom && right == box.right && left == box.left && owner == box.owner && x == box.x && y == box.y;
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package edu.neu.coe.info6205.mcts.dotsandboxes;
 
+import edu.neu.coe.info6205.mcts.tictactoe.Position;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,11 @@ public class BoxPosition {
         this.count=count;
     }
 
-    private Box[][] copyGrid() {
+    public int getCount(){
+        return this.count;
+    }
+
+    public Box[][] copyGrid() {
         Box[][] result = new Box[gridSize][gridSize];
         for (int i = 0; i < gridSize; i++){
             for(int j=0;j<gridSize;j++){
@@ -195,7 +201,21 @@ public class BoxPosition {
                 }
         return result;
     }
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BoxPosition)) return false;
+        int equalCount=0;
+        BoxPosition boxPosition = (BoxPosition) o;
+        for(int i=0;i<gridSize;i++){
+            for(int j=0;j<gridSize;j++){
+                if(boxPosition.grid[i][j].equals(grid[i][j])){
+                    equalCount++;
+                }
+            }
+        }
+        return equalCount==9;
+    }
     public Optional<Integer> winner() {
         int count=0;
         int winner;

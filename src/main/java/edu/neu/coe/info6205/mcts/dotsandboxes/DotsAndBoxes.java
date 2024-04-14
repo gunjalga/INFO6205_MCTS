@@ -30,6 +30,9 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
         public DotsAndBoxesState(BoxPosition boxPosition){
             this.position=boxPosition;
         }
+        public DotsAndBoxesState(State<DotsAndBoxes> state){
+            this.position=new BoxPosition(state.boxPosition().copyGrid(),state.player(),state.boxPosition().getCount());
+        }
         @Override
         public DotsAndBoxes game() {
             return DotsAndBoxes.this;

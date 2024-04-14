@@ -17,13 +17,27 @@ import java.util.Scanner;
 public class MCTS<G extends Game > {
 
     public static void main(String[] args) {
-//        MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
+        MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
 //        System.out.println(mcts.root.state().boxPosition().render());
-//        Node<DotsAndBoxes>n1=mcts.root.addChild();
+        Node<DotsAndBoxes>root=mcts.root;
+
+//        Node<DotsAndBoxes> result= new DotsAndBoxesNode(root.state());
+        for(int i=0;i<24;i++){
+            Node<DotsAndBoxes> child=selectionNode(root);
+            if(child!=null){
+                child.simulateRandom();
+            }
+
+        }
+        Node<DotsAndBoxes> child=root.selectChild();
+        System.out.println(child.state().position().render());
+
+//        System.out.println(result.state().boxPosition().render());
 //        System.out.println(n1.state().boxPosition().render());
-        startTicTacToe();
+//        startTicTacToe();
         // This is where you process the MCTS to try to win the game.
     }
+
 
     public static void startTicTacToe(){
         MCTS mcts = new MCTS(new TicTacToeNode(new TicTacToe().new TicTacToeState()));
@@ -62,6 +76,15 @@ public class MCTS<G extends Game > {
         System.out.println("Winner:"+winner);
     }
 
+    public static Node<DotsAndBoxes> selectionNode(Node<DotsAndBoxes> root){
+        if(root.isFullyExpanded() && !root.state().isTerminal()){
+            return selectionNode(root.selectChild());
+        }else if(root.state().winner().isPresent()){
+            return root;
+        }
+        return root.addChild();
+    }
+
     public static Node<TicTacToe> selection(Node<TicTacToe> root){
         if(root.isFullyExpanded() && !root.state().isTerminal()){
             return selection(root.selectChild());
@@ -73,6 +96,7 @@ public class MCTS<G extends Game > {
 
 
     }
+
     public static void backpropagate(Node<TicTacToe> node){
         Node<TicTacToe>leafNode = node;
         int tempWins= leafNode.wins();
