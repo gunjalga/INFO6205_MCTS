@@ -32,7 +32,7 @@ public class MCTS<G extends Game > {
 //        }
 //        Node<DotsAndBoxes> child=root.selectChild();
 //        System.out.println(child.state().boxPosition().render());
-        startDotAndBoxes();
+       startDotAndBoxes();
 //        System.out.println(result.state().boxPosition().render());
 //        System.out.println(n1.state().boxPosition().render());
 //        startTicTacToe();
@@ -62,11 +62,37 @@ public class MCTS<G extends Game > {
 //            Position computerMovePosition=root.selectChild().state().position();
 
             Node<DotsAndBoxes> child=root.selectChild();
+
             System.out.println(child.state().boxPosition().render());
             if(!root.state().isTerminal()){
                 root= new DotsAndBoxesNode(makeComputerMoveDB(child));
+                System.out.println("Player:"+root.state().player());
+
             }else{
                 break;
+            }
+            while(root.state().player()==0){
+                for (int i = 0; i < 1000; i++) {
+//            if fully expanded then select or add child
+                    Node<DotsAndBoxes> temp = selectionNode(root);
+                    if (temp != null ) {
+                        temp.simulateRandom();
+                        backPropagateBox(temp);
+                    }
+
+//            simulate from the node which was given by last lines(will return a temp node)
+//            call backpropagate from the temp node(note don't add parent to temp node)
+
+                }
+                child=root.selectChild();
+
+                System.out.println(child.state().boxPosition().render());
+                if(!root.state().isTerminal()){
+                    root= new DotsAndBoxesNode(makeComputerMoveDB(child));
+                }else{
+                    break;
+                }
+
             }
 
 
@@ -174,7 +200,7 @@ public class MCTS<G extends Game > {
         String direction=sc.next();
         DotsAndBoxes.DotsAndBoxesMove userMove = new DotsAndBoxes.DotsAndBoxesMove(i,j,direction,player);
         State<DotsAndBoxes>movePlayed =root.state().next(userMove);
-        while (player!= movePlayed.player()){
+        while (player== movePlayed.player()){
              sc = new Scanner(System.in);
             System.out.println("Enter i and j:");
              i=sc.nextInt();
@@ -192,7 +218,6 @@ public class MCTS<G extends Game > {
     }
     public static State makeComputerMoveDB(Node<DotsAndBoxes> root){
         return new DotsAndBoxes(). new DotsAndBoxesState(root.state().boxPosition());
-//        return null;
     }
     private final Node<G> root;
 

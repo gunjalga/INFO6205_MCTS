@@ -27,11 +27,12 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
     public class DotsAndBoxesState implements State<DotsAndBoxes>{
         private final BoxPosition position;
 
+
         public DotsAndBoxesState(BoxPosition boxPosition){
             this.position=boxPosition;
         }
         public DotsAndBoxesState(State<DotsAndBoxes> state){
-            this.position=new BoxPosition(state.boxPosition().copyGrid(),state.player(),state.boxPosition().getCount());
+            this.position=new BoxPosition(state.boxPosition().copyGrid(),1-state.player(),state.boxPosition().getCount());
         }
         @Override
         public DotsAndBoxes game() {
@@ -56,8 +57,8 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
         @Override
         public int player() {
             return switch (position.last) {
-                case 0, -1 -> O;
-                case 1 -> X;
+                case 0, -1 -> X;
+                case 1 -> O;
                 default -> blank;
             };
         }

@@ -87,6 +87,7 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
         {
             State<DotsAndBoxes>tempCopy=new DotsAndBoxes().new DotsAndBoxesState(this.state);
             State<DotsAndBoxes> newState = tempCopy.next(it.next());
+
             if(this.children().isEmpty()){
                 newNode=new DotsAndBoxesNode(newState);
                 newNode.updateParent(this);
