@@ -31,7 +31,9 @@ public class MCTS<G extends Game > {
 
         while(!root.state().isTerminal()) {
             root = new TicTacToeNode(takeMove(root, 1));
-
+            if(root.state().isTerminal()){
+                break;
+            }
             for (int i = 0; i < 1000; i++) {
 //            if fully expanded then select or add child
                 Node<TicTacToe> temp = selection(root);
