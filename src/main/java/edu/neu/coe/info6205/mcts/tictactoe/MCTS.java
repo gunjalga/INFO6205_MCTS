@@ -53,7 +53,7 @@ public class MCTS<G extends Game > {
         root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"bottom",0));
         root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"bottom",1));
         root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,1,"bottom",0));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,2,"bottom",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,2,"bottom",1));
         root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"left",0));
         root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"left",1));
         root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"left",0));

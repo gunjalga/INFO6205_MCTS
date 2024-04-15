@@ -86,7 +86,7 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
         Node<DotsAndBoxes> newNode=null;
         State<DotsAndBoxes>temp=new DotsAndBoxes().new DotsAndBoxesState(this.state);
 
-        for (Iterator<Move<DotsAndBoxes>> it = temp.moveIterator(temp.player()); it.hasNext(); )
+        for (Iterator<Move<DotsAndBoxes>> it = temp.moveIterator(this.state.player()); it.hasNext(); )
         {
             State<DotsAndBoxes>tempCopy=new DotsAndBoxes().new DotsAndBoxesState(this.state);
             State<DotsAndBoxes> newState = tempCopy.next(it.next());
@@ -146,21 +146,31 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
 
     @Override
     public void simulateRandom() {
-        int currentPlayer = -1;
+        int currentPlayer = this.state.player();
 
-        if(this.state.boxPosition().boxCaptured)
-            currentPlayer=1-this.state.player();
-        else{
-            currentPlayer=this.state.player();
+//        if(this.state.boxPosition().boxCaptured)
+//            currentPlayer=1-this.state.player();
+//        else{
+//            currentPlayer=this.state.player();
+//        }
+        int levelPlayer=-1;
+        if(this.state.boxPosition().boxCaptured){
+            levelPlayer=currentPlayer;
+        }else{
+            levelPlayer=1-currentPlayer;
         }
-        int levelPlayer= 1-currentPlayer;
-        State<DotsAndBoxes>newState=new DotsAndBoxes().new DotsAndBoxesState(this.state);;
+        State<DotsAndBoxes>newState=new DotsAndBoxes().new DotsAndBoxesState(this.state);
+        boolean isBoxCaptured;
         while(!newState.isTerminal()){
+            isBoxCaptured=false;
             State<DotsAndBoxes> temp=(DotsAndBoxes.DotsAndBoxesState)newState.next(newState.chooseMove(currentPlayer));
-            currentPlayer=temp.boxPosition().last;
+            isBoxCaptured=temp.boxPosition().boxCaptured;
+            if(!isBoxCaptured){
+                currentPlayer=1-currentPlayer;
+            }
             newState=temp;
 //            if(!temp.boxPosition().boxCaptured) {
-                currentPlayer = 1 - currentPlayer;
+//                currentPlayer = 1 - currentPlayer;
 //            }
         }
         currentPlayer=newState.winner().get();

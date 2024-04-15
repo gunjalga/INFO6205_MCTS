@@ -32,7 +32,7 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
             this.position=boxPosition;
         }
         public DotsAndBoxesState(State<DotsAndBoxes> state){
-            this.position=new BoxPosition(state.boxPosition().copyGrid(),1-state.player(),state.boxPosition().getCount());
+            this.position=new BoxPosition(state.boxPosition().copyGrid(),state.player(),state.boxPosition().getCount(),state.boxPosition().boxCaptured);
         }
         @Override
         public DotsAndBoxes game() {
@@ -116,14 +116,23 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
             count++;
 //
             System.out.println( "Player:"+player);
+            state=new DotsAndBoxes().new DotsAndBoxesState(state);
+
             State<DotsAndBoxes> newState = state.next(state.chooseMove(player));
-            player=newState.boxPosition().last;
+//            if(newState.boxPosition().boxCaptured){
+                player= newState.player();
+//            }
             state=newState;
+
+
+//            player= newState.player();
+//            player=newState.boxPosition().last;
+//            state=newState;
             System.out.println(state.boxPosition().render());
 
 //            if(switchPlayer)
-            player = 1 - player;
-            System.out.println("Move no:"+count+" Player:"+player);
+//            player = 1 - player;
+            System.out.println("Move no:"+count+" Player:"+player+"Capurted a box? "+state.boxPosition().boxCaptured);
 
         }
 

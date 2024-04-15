@@ -27,13 +27,14 @@ public class BoxPosition {
                     matrix[i][j]=new Box();
             }
         }
-        return new BoxPosition(matrix, -1, 0);
+        return new BoxPosition(matrix, -1, 0,false);
     }
 
-    public BoxPosition(Box[][] grid, int last,int count){
+    public BoxPosition(Box[][] grid, int last,int count,boolean boxCaptured){
         this.grid=grid;
         this.last=last;
         this.count=count;
+        this.boxCaptured=boxCaptured;
     }
     public BoxPosition(BoxPosition boxPosition){
         this.grid=boxPosition.copyGrid();
@@ -111,13 +112,10 @@ public class BoxPosition {
     }
 
     public BoxPosition move(int x, int y,String direction,int player){
-        int repeatPlayer= player;
+        this.boxCaptured=false;
         if(direction.toLowerCase().equals("left")){
-//            if(grid[x][y].left==true){
-//                throw new RuntimeException("This move has been already made");
-//            }
+
             if(y>=0 && grid[x][y].left){
-//                throw new RuntimeException("This move has been already made");
                 System.out.println("Move Already made, Make another move");
                 return this;
             }
@@ -126,7 +124,6 @@ public class BoxPosition {
                 if(grid[x][y-1].left && grid[x][y-1].right && grid[x][y-1].top && grid[x][y-1].bottom){
                     grid[x][y-1].owner=player;
                     boxCaptured=true;
-                    repeatPlayer=1-player;
                 }
             }
             grid[x][y].left=true;
@@ -141,7 +138,6 @@ public class BoxPosition {
                 if(grid[x][y+1].left && grid[x][y+1].right && grid[x][y+1].top && grid[x][y+1].bottom){
                     grid[x][y+1].owner=player;
                     boxCaptured=true;
-                    repeatPlayer=1-player;
                 }
             }
             grid[x][y].right=true;
@@ -155,7 +151,6 @@ public class BoxPosition {
                 if(grid[x-1][y].left && grid[x-1][y].right && grid[x-1][y].top && grid[x-1][y].bottom){
                     grid[x-1][y].owner=player;
                     boxCaptured=true;
-                    repeatPlayer=1-player;
                 }
             }
             grid[x][y].top=true;
@@ -169,7 +164,6 @@ public class BoxPosition {
                 if(grid[x+1][y].left && grid[x+1][y].right && grid[x+1][y].top && grid[x+1][y].bottom){
                     grid[x+1][y].owner=player;
                     boxCaptured=true;
-                    repeatPlayer=1-player;
                 }
             }
             grid[x][y].bottom=true;
@@ -180,11 +174,10 @@ public class BoxPosition {
 
         if(grid[x][y].left && grid[x][y].right && grid[x][y].top && grid[x][y].bottom){
             grid[x][y].owner=player;
-            repeatPlayer=1-player;
             boxCaptured=true;
         }
 
-        BoxPosition newBoxPosition=new BoxPosition(grid,repeatPlayer,count+1);
+        BoxPosition newBoxPosition=new BoxPosition(grid,player,count+1,boxCaptured);
         if(boxCaptured){
             newBoxPosition.boxCaptured=true;
         }
