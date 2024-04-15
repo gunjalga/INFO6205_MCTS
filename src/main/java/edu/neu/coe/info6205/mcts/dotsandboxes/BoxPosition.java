@@ -9,7 +9,16 @@ import java.util.Optional;
 
 public class BoxPosition {
     Box[][] grid;
+
+    public int getLast() {
+        return last;
+    }
+
     final int last;
+
+    public boolean isBoxCaptured() {
+        return boxCaptured;
+    }
 
     boolean boxCaptured;
     private final static int gridSize = 3;

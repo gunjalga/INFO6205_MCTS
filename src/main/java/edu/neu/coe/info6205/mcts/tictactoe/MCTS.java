@@ -42,29 +42,29 @@ public class MCTS<G extends Game > {
     public static void startDotAndBoxes(){
         MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
         Node<DotsAndBoxes> root = mcts.root;
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"top",0));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"bottom",1));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"top",0));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"bottom",1));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"top",0));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"bottom",1));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"bottom",0));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,1,"bottom",1));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"bottom",0));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"bottom",1));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,1,"bottom",0));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,2,"bottom",1));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"left",0));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"left",1));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"left",0));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"right",1));
-        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"right",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"top",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"bottom",1));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"top",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"bottom",1));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"top",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"bottom",1));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"bottom",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,1,"bottom",1));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"bottom",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"bottom",1));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,1,"bottom",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,2,"bottom",1));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"left",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"left",1));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"left",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"right",1));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"right",0));
         while(!root.state().isTerminal()) {
             root = new DotsAndBoxesNode(takeMoveDB(root, 1));
             if(root.state().isTerminal()){
                 break;
             }
-            for (int i = 0; i < 3000; i++) {
+            for (int i = 0; i < 2000; i++) {
 //            if fully expanded then select or add child
                 if(root.state().isTerminal()){
                     break;
@@ -188,7 +188,7 @@ public class MCTS<G extends Game > {
         Node<DotsAndBoxes>leafNode=node;
         int tempWins= leafNode.wins();
         while(node.getParent()!=null){
-            if(node.state().player()!=node.getParent().state().player()){
+            if(!node.getParent().state().boxPosition().isBoxCaptured()){
                 tempWins=-tempWins;
             }
             node.getParent().addWins(tempWins);
