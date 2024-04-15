@@ -56,6 +56,9 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
 
         @Override
         public int player() {
+            if(this.boxPosition().boxCaptured){
+                return position.last;
+            }
             return switch (position.last) {
                 case 0, -1 -> X;
                 case 1 -> O;

@@ -4,6 +4,7 @@ import edu.neu.coe.info6205.mcts.core.Game;
 import edu.neu.coe.info6205.mcts.core.Move;
 import edu.neu.coe.info6205.mcts.core.Node;
 import edu.neu.coe.info6205.mcts.core.State;
+import edu.neu.coe.info6205.mcts.dotsandboxes.BoxPosition;
 import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxes;
 import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxesNode;
 
@@ -41,14 +42,33 @@ public class MCTS<G extends Game > {
     public static void startDotAndBoxes(){
         MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
         Node<DotsAndBoxes> root = mcts.root;
-
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"top",0));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"bottom",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"top",0));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"bottom",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"top",0));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"bottom",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"bottom",0));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,1,"bottom",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"bottom",0));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"bottom",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,1,"bottom",0));
+//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,2,"bottom",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"left",0));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"left",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"left",0));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"right",1));
+        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"right",0));
         while(!root.state().isTerminal()) {
             root = new DotsAndBoxesNode(takeMoveDB(root, 1));
             if(root.state().isTerminal()){
                 break;
             }
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 3000; i++) {
 //            if fully expanded then select or add child
+                if(root.state().isTerminal()){
+                    break;
+                }
                 Node<DotsAndBoxes> temp = selectionNode(root);
                 if (temp != null ) {
                     temp.simulateRandom();
@@ -63,10 +83,10 @@ public class MCTS<G extends Game > {
 
             Node<DotsAndBoxes> child=root.selectChild();
 
-            System.out.println(child.state().boxPosition().render());
+//            System.out.println(child.state().boxPosition().render());
             if(!root.state().isTerminal()){
                 root= new DotsAndBoxesNode(makeComputerMoveDB(child));
-                System.out.println("Player:"+root.state().player());
+//                System.out.println("Player:"+root.state().player());
 
             }else{
                 break;
@@ -74,6 +94,9 @@ public class MCTS<G extends Game > {
             while(root.state().player()==0){
                 for (int i = 0; i < 1000; i++) {
 //            if fully expanded then select or add child
+                    if(root.state().isTerminal()){
+                        break;
+                    }
                     Node<DotsAndBoxes> temp = selectionNode(root);
                     if (temp != null ) {
                         temp.simulateRandom();
@@ -94,6 +117,7 @@ public class MCTS<G extends Game > {
                 }
 
             }
+            System.out.println(child.state().boxPosition().render());
 
 
         }
@@ -164,7 +188,9 @@ public class MCTS<G extends Game > {
         Node<DotsAndBoxes>leafNode=node;
         int tempWins= leafNode.wins();
         while(node.getParent()!=null){
-            tempWins=-tempWins;
+            if(node.state().player()!=node.getParent().state().player()){
+                tempWins=-tempWins;
+            }
             node.getParent().addWins(tempWins);
             node.getParent().addPlayouts(1);
             node= node.getParent();
@@ -193,6 +219,8 @@ public class MCTS<G extends Game > {
         return  root.state().next(userMove);
     }
     public static State takeMoveDB(Node<DotsAndBoxes> root,int player){
+        State<DotsAndBoxes> initialMove =new DotsAndBoxes(). new DotsAndBoxesState(new BoxPosition( root.state().boxPosition()));
+//        State<DotsAndBoxes> initilMove=root.state();
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter i and j:");
         int i=sc.nextInt();
@@ -200,7 +228,17 @@ public class MCTS<G extends Game > {
         String direction=sc.next();
         DotsAndBoxes.DotsAndBoxesMove userMove = new DotsAndBoxes.DotsAndBoxesMove(i,j,direction,player);
         State<DotsAndBoxes>movePlayed =root.state().next(userMove);
+        if(movePlayed.boxPosition().equals(initialMove.boxPosition())){
+            sc = new Scanner(System.in);
+            System.out.println("Enter i and j and direction:");
+            i=sc.nextInt();
+            j=sc.nextInt();
+            direction=sc.next();
+            userMove = new DotsAndBoxes.DotsAndBoxesMove(i,j,direction,player);
+            movePlayed =root.state().next(userMove);
+        }
         while (player== movePlayed.player()){
+            System.out.println(root.state().boxPosition().render());
              sc = new Scanner(System.in);
             System.out.println("Enter i and j:");
              i=sc.nextInt();

@@ -70,7 +70,10 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
                 bestChild.add(child);
             }
         }
-        return bestChild.get(new Random().nextInt(bestChild.size()));
+        Node<DotsAndBoxes> selectedChild=bestChild.get(new Random().nextInt(bestChild.size()));
+//        System.out.println("Best score:");
+//        System.out.println(bestScore+selectedChild.state().boxPosition().render());
+        return selectedChild;
     }
 
     @Override
@@ -143,14 +146,22 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
 
     @Override
     public void simulateRandom() {
-        int currentPlayer = this.state.player();
-        int levelPlayer = 1-currentPlayer;
+        int currentPlayer = -1;
+
+        if(this.state.boxPosition().boxCaptured)
+            currentPlayer=1-this.state.player();
+        else{
+            currentPlayer=this.state.player();
+        }
+        int levelPlayer= 1-currentPlayer;
         State<DotsAndBoxes>newState=new DotsAndBoxes().new DotsAndBoxesState(this.state);;
         while(!newState.isTerminal()){
-            State<DotsAndBoxes> temp=newState.next(newState.chooseMove(currentPlayer));
+            State<DotsAndBoxes> temp=(DotsAndBoxes.DotsAndBoxesState)newState.next(newState.chooseMove(currentPlayer));
             currentPlayer=temp.boxPosition().last;
             newState=temp;
-            currentPlayer=1-currentPlayer;
+//            if(!temp.boxPosition().boxCaptured) {
+                currentPlayer = 1 - currentPlayer;
+//            }
         }
         currentPlayer=newState.winner().get();
         Node<DotsAndBoxes> tempNode = new DotsAndBoxesNode(newState);

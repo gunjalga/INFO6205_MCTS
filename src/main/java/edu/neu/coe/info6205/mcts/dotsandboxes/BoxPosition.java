@@ -10,6 +10,8 @@ import java.util.Optional;
 public class BoxPosition {
     Box[][] grid;
     final int last;
+
+    boolean boxCaptured;
     private final static int gridSize = 3;
     public int getGridSize(){
         return gridSize;
@@ -33,7 +35,11 @@ public class BoxPosition {
         this.last=last;
         this.count=count;
     }
-
+    public BoxPosition(BoxPosition boxPosition){
+        this.grid=boxPosition.copyGrid();
+        this.last=boxPosition.last;
+        this.count=boxPosition.count;
+    }
     public int getCount(){
         return this.count;
     }
@@ -110,52 +116,79 @@ public class BoxPosition {
 //            if(grid[x][y].left==true){
 //                throw new RuntimeException("This move has been already made");
 //            }
+            if(y>=0 && grid[x][y].left){
+//                throw new RuntimeException("This move has been already made");
+                System.out.println("Move Already made, Make another move");
+                return this;
+            }
             if(y>0){
                 grid[x][y-1].right=true;
                 if(grid[x][y-1].left && grid[x][y-1].right && grid[x][y-1].top && grid[x][y-1].bottom){
                     grid[x][y-1].owner=player;
+                    boxCaptured=true;
                     repeatPlayer=1-player;
                 }
             }
             grid[x][y].left=true;
         }else if(direction.toLowerCase().equals("right")){
+
+            if(grid[x][y].right){
+                System.out.println("Move Already made, Make another move");
+                return this;
+            }
             if(y<gridSize-1){
                 grid[x][y+1].left=true;
                 if(grid[x][y+1].left && grid[x][y+1].right && grid[x][y+1].top && grid[x][y+1].bottom){
                     grid[x][y+1].owner=player;
+                    boxCaptured=true;
                     repeatPlayer=1-player;
                 }
             }
             grid[x][y].right=true;
         }else if(direction.toLowerCase().equals("top")){
+            if(grid[x][y].top){
+                System.out.println("Move Already made, Make another move");
+                return this;
+            }
             if(x>0){
                 grid[x-1][y].bottom=true;
                 if(grid[x-1][y].left && grid[x-1][y].right && grid[x-1][y].top && grid[x-1][y].bottom){
                     grid[x-1][y].owner=player;
+                    boxCaptured=true;
                     repeatPlayer=1-player;
                 }
             }
             grid[x][y].top=true;
         }else if(direction.toLowerCase().equals("bottom")){
+            if(grid[x][y].bottom){
+                System.out.println("Move Already made, Make another move");
+                return this;
+            }
             if(x<gridSize-1){
                 grid[x+1][y].top=true;
                 if(grid[x+1][y].left && grid[x+1][y].right && grid[x+1][y].top && grid[x+1][y].bottom){
                     grid[x+1][y].owner=player;
+                    boxCaptured=true;
                     repeatPlayer=1-player;
                 }
             }
             grid[x][y].bottom=true;
         }else{
             System.out.println("Please enter valid direction");
+            return this;
         }
 
         if(grid[x][y].left && grid[x][y].right && grid[x][y].top && grid[x][y].bottom){
             grid[x][y].owner=player;
             repeatPlayer=1-player;
+            boxCaptured=true;
         }
 
-
-        return new BoxPosition(grid,repeatPlayer,count+1);
+        BoxPosition newBoxPosition=new BoxPosition(grid,repeatPlayer,count+1);
+        if(boxCaptured){
+            newBoxPosition.boxCaptured=true;
+        }
+        return newBoxPosition;
     }
 
     public List<Box> moves(int player){
