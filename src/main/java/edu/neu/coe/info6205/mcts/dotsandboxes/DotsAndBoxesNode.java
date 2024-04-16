@@ -93,6 +93,8 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
 
             if(this.children().isEmpty()){
                 newNode=new DotsAndBoxesNode(newState);
+                newNode.resetWins();
+                newNode.resetPlayOuts();
                 newNode.updateParent(this);
                 children.add(newNode);
 
@@ -105,6 +107,8 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
                         (node->node.state().boxPosition().
                                 equals(newState.boxPosition()))){
                     newNode=new DotsAndBoxesNode(newState);
+                    newNode.resetWins();
+                    newNode.resetPlayOuts();
                     newNode.updateParent(this);
                     children.add(newNode);
                     break;
@@ -123,9 +127,15 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
             playouts = 1;
             Optional<Integer> winner = state.winner();
             if (winner.isPresent())
-                wins = 1; // if computer wins
+            {
+                if(winner.get()==0||winner.get()==1){
+                    wins = 1;
+                }
+                // if computer wins
 
-            else wins=0;// if human wins.
+                else wins=0;// if human wins.
+            }
+            else wins=0;
         }
     }
 
@@ -147,7 +157,6 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
     @Override
     public void simulateRandom() {
         int currentPlayer = this.state.player();
-
 //        if(this.state.boxPosition().boxCaptured)
 //            currentPlayer=1-this.state.player();
 //        else{
@@ -161,10 +170,18 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
         }
         State<DotsAndBoxes>newState=new DotsAndBoxes().new DotsAndBoxesState(this.state);
         boolean isBoxCaptured;
+        int boxWins=0;
+        int loosingBoxes=0;
         while(!newState.isTerminal()){
             isBoxCaptured=false;
             State<DotsAndBoxes> temp=(DotsAndBoxes.DotsAndBoxesState)newState.next(newState.chooseMove(currentPlayer));
             isBoxCaptured=temp.boxPosition().boxCaptured;
+            if(isBoxCaptured && currentPlayer==levelPlayer){
+                boxWins++;
+            }
+            if(isBoxCaptured && currentPlayer!=levelPlayer){
+                loosingBoxes++;
+            }
             if(!isBoxCaptured){
                 currentPlayer=1-currentPlayer;
             }
@@ -177,7 +194,7 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
         Node<DotsAndBoxes> tempNode = new DotsAndBoxesNode(newState);
         this.updatePlayouts(tempNode.playouts());
         if(newState.winner().isPresent()){
-            this.updateWins(levelPlayer==currentPlayer?tempNode.wins():-tempNode.wins());
+            this.updateWins(levelPlayer==currentPlayer?tempNode.wins()+boxWins:-tempNode.wins()-loosingBoxes);
         }
         else{
             this.updateWins(0);
@@ -192,6 +209,16 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
     @Override
     public void addPlayouts(int playouts) {
         this.playouts+=playouts;
+    }
+
+    @Override
+    public void resetWins() {
+        this.wins=0;
+    }
+
+    @Override
+    public void resetPlayOuts() {
+        this.playouts=0;
     }
 
     @Override

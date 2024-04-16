@@ -149,6 +149,17 @@ public class TicTacToeNode implements Node<TicTacToe> {
     public void addPlayouts(int playouts){
         this.playouts+=playouts;
     }
+
+    @Override
+    public void resetWins() {
+
+    }
+
+    @Override
+    public void resetPlayOuts() {
+
+    }
+
     public void updateParent(Node<TicTacToe> node){
         this.parent=node;
     }

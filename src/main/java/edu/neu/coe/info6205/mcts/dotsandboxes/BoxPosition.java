@@ -249,7 +249,7 @@ public class BoxPosition {
                 }
             }
         }
-        return equalCount==9;
+        return equalCount==gridSize*gridSize;
     }
     public Optional<Integer> winner() {
         int count=0;
@@ -270,10 +270,11 @@ public class BoxPosition {
         }
         if(p0>p1){
             winner=0;
-        }else{
+        }else if(p1>p0){
             winner=1;
         }
-        if (count ==9) return Optional.of(winner);
+        else winner=-1;
+        if (full()) return Optional.of(winner);
         return Optional.empty();
     }
 
@@ -286,7 +287,7 @@ public class BoxPosition {
                 }
             }
         }
-        return count==9;
+        return count==gridSize*gridSize;
     }
     private final int count;
     @Override

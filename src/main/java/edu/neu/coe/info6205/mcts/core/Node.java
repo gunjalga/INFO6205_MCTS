@@ -76,6 +76,10 @@ public interface Node<G extends Game> {
 
     void addWins(int wins);
     void addPlayouts(int playouts);
+
+    void resetWins();
+
+    void resetPlayOuts();
     Node<G> getParent();
     void updatePlayouts(int playouts);
     /**
