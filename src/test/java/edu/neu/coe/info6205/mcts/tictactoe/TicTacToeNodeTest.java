@@ -1,5 +1,6 @@
 package edu.neu.coe.info6205.mcts.tictactoe;
 
+import edu.neu.coe.info6205.mcts.core.Node;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -45,9 +46,17 @@ public class TicTacToeNodeTest {
 
     @Test
     public void simulateRandom(){
+        TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState(Position.parsePosition("X . 0\nX O .\nX . 0", TicTacToe.X));
+        TicTacToeNode node = new TicTacToeNode(state);
+//        node.simulateRandom();
+//        assertTrue(node.isFullyExpanded());
     }
     @Test
     public void addChild() {
+        TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState(Position.parsePosition("X X 0\n0 O .\nX X 0", TicTacToe.X));
+        TicTacToeNode node = new TicTacToeNode(state);
+        node.addChild();
+        assertTrue(node.children().size()==1);
         // no tests yet
     }
 
@@ -58,5 +67,16 @@ public class TicTacToeNodeTest {
 
     @Test
     public void isLeaf(){
+        TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState(Position.parsePosition("X X 0\n0 O .\nX X 0", TicTacToe.X));
+        TicTacToeNode node = new TicTacToeNode(state);
+        assertEquals(false,node.isLeaf());
+        while(!node.isFullyExpanded()){
+            node.simulateRandom();
+            node.addChild();
+        }
+        Node<TicTacToe> nodeChild= node.selectChild();
+        assertTrue(nodeChild.isLeaf());
+
+
     }
 }
