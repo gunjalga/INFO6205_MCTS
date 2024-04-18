@@ -32,6 +32,13 @@ public class TicTacToeNodeTest {
 
     @Test
     public void children() {
+        TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState(Position.parsePosition("X . 0\nX O .\nX . 0", TicTacToe.X));
+        TicTacToeNode node = new TicTacToeNode(state);
+        while (!node.isFullyExpanded()){
+            node.addChild();
+        }
+//        node.selectChild();
+        assertEquals(node.children().size(),3);
         // no tests yet
 
     }
