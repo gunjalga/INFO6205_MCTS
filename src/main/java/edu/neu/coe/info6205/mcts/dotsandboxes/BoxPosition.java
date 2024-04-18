@@ -39,6 +39,66 @@ public class BoxPosition {
         return new BoxPosition(matrix, -1, 0,false);
     }
 
+//    "·--·--·  ·\n" +"|p1|p0|  |\n" + "·--·--·  ·\n" + "   |      \n" + "·  ·  ·  ·\n" + "          \n" + "·  ·--·  ·\n"
+public static BoxPosition parseBoxPosition(String input, int gridSize) {
+        Box[][] grid= new Box[3][3];
+        for(int i=0;i<gridSize;i++){
+            for(int j=0;j<gridSize;j++){
+                grid[i][j]= new Box();
+            }
+        }
+    BoxPosition boxPosition = new BoxPosition(grid,0,0,false);
+    int count=0;
+    String[] lines = input.split("\n");
+    for (int i = 0; i < 7; i++) {
+        if (i % 2 == 0) { // Processing horizontal lines
+            String[] line=lines[i].split("·");
+            for (int j = 0; j < gridSize; j++) {
+                if(i<5){
+                    boxPosition.grid[i/2][j].top = line[j+1].equals("--");
+//                    if(i/2>0){
+//                        boxPosition.grid[i/2-1][j].bottom = line[j+1].equals("--");
+//                    }
+                }
+                if(i>0){
+                    boxPosition.grid[i / 2-1][j].bottom = line[j+1].equals("--");
+                }
+            }
+        } else { // Processing vertical lines
+            for (int j = 0; j < gridSize *gridSize; j++) {
+                int linePos=i/2;
+                String currentLine=lines[i];
+                if(j%3==0){
+                    if(currentLine.charAt(j)=='|'){
+                        boxPosition.grid[linePos][j/3].left=true;
+                        if(j/3>0){
+                            boxPosition.grid[linePos][j/3-1].right=true;
+                        }
+                    }
+
+                }
+                else if(j==8 && currentLine.charAt(9)=='|'){
+                    boxPosition.grid[linePos][2].right=true;
+                }
+                else{
+                    if(j%3==2){
+                        int pos=j/3;
+
+                        if(currentLine.charAt(j)=='0'){
+                            boxPosition.grid[linePos][pos].owner=0;
+                        }
+                        if(currentLine.charAt(j)=='1'){
+                            boxPosition.grid[linePos][pos].owner=1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return boxPosition;
+}
+
+
     public BoxPosition(Box[][] grid, int last,int count,boolean boxCaptured){
         this.grid=grid;
         this.last=last;
