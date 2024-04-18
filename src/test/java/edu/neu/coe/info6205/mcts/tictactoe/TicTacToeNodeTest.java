@@ -48,8 +48,8 @@ public class TicTacToeNodeTest {
     public void simulateRandom(){
         TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState(Position.parsePosition("X . 0\nX O .\nX . 0", TicTacToe.X));
         TicTacToeNode node = new TicTacToeNode(state);
-//        node.simulateRandom();
-//        assertTrue(node.isFullyExpanded());
+        node.simulateRandom();
+        assertEquals(true,node.state().isTerminal());
     }
     @Test
     public void addChild() {
