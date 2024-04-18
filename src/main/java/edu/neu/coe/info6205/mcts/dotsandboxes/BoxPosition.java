@@ -76,9 +76,18 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
                         }
                     }
 
-                }
-                else if(j==8 && currentLine.charAt(9)=='|'){
+                } else if(j==8 && currentLine.charAt(9)=='|'){
+//                    Condition for last column of the row
                     boxPosition.grid[linePos][2].right=true;
+                        int pos=j/3;
+                        if(currentLine.charAt(j)=='0'){
+                            boxPosition.grid[linePos][pos].owner=0;
+                            count++;
+                        }
+                        if(currentLine.charAt(j)=='1'){
+                            boxPosition.grid[linePos][pos].owner=1;
+                            count++;
+                        }
                 }
                 else{
                     if(j%3==2){
@@ -86,15 +95,18 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
 
                         if(currentLine.charAt(j)=='0'){
                             boxPosition.grid[linePos][pos].owner=0;
+                            count++;
                         }
                         if(currentLine.charAt(j)=='1'){
                             boxPosition.grid[linePos][pos].owner=1;
+                            count++;
                         }
                     }
                 }
             }
         }
     }
+    boxPosition.count=count;
     return boxPosition;
 }
 
@@ -185,6 +197,7 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
         if(direction.toLowerCase().equals("left")){
 
             if(y>=0 && grid[x][y].left){
+                new RuntimeException("Move Already made, Make another move");
                 System.out.println("Move Already made, Make another move");
                 return this;
             }
@@ -199,6 +212,7 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
         }else if(direction.toLowerCase().equals("right")){
 
             if(grid[x][y].right){
+                new RuntimeException("Move Already made, Make another move");
                 System.out.println("Move Already made, Make another move");
                 return this;
             }
@@ -212,6 +226,7 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
             grid[x][y].right=true;
         }else if(direction.toLowerCase().equals("top")){
             if(grid[x][y].top){
+                new RuntimeException("Move Already made, Make another move");
                 System.out.println("Move Already made, Make another move");
                 return this;
             }
@@ -225,6 +240,7 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
             grid[x][y].top=true;
         }else if(direction.toLowerCase().equals("bottom")){
             if(grid[x][y].bottom){
+                new RuntimeException("Move Already made, Make another move");
                 System.out.println("Move Already made, Make another move");
                 return this;
             }
@@ -237,6 +253,7 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
             }
             grid[x][y].bottom=true;
         }else{
+            new RuntimeException("Please enter valid direction");
             System.out.println("Please enter valid direction");
             return this;
         }
@@ -349,7 +366,7 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
         }
         return count==gridSize*gridSize;
     }
-    private final int count;
+    private int count;
     @Override
     public String toString() {
         return this.render();

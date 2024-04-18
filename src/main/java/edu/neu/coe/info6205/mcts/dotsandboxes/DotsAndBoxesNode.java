@@ -3,6 +3,7 @@ package edu.neu.coe.info6205.mcts.dotsandboxes;
 import edu.neu.coe.info6205.mcts.core.Move;
 import edu.neu.coe.info6205.mcts.core.Node;
 import edu.neu.coe.info6205.mcts.core.State;
+import edu.neu.coe.info6205.mcts.tictactoe.MCTS;
 
 import java.util.*;
 
@@ -54,7 +55,7 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
     @Override
     public Node<DotsAndBoxes> selectChild() {
         double bestScore = Double.NEGATIVE_INFINITY;
-        List<Node<DotsAndBoxes>> bestChild = new ArrayList<>();
+        ArrayList<Node<DotsAndBoxes>> bestChild = new ArrayList<>();
         double uctScore;
         for (Node<DotsAndBoxes> child : children) {
 //            if(child.state().isTerminal()){
@@ -70,7 +71,19 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
                 bestChild.add(child);
             }
         }
-        Node<DotsAndBoxes> selectedChild=bestChild.get(new Random().nextInt(bestChild.size()));
+
+        Node<DotsAndBoxes> selectedChild= bestChild.get(new Random().nextInt(bestChild.size()));
+        for (Node<DotsAndBoxes> child : bestChild) {
+            int maxWins= Integer.MIN_VALUE;
+            int wins = child.wins(); // Get the number of wins for the current child
+            if (wins > maxWins) {
+                // Update the best child and the maximum number of wins
+                selectedChild = child;
+                maxWins = wins;
+            }
+        }
+//                nodeComparator.findBestMove(bestChild);
+//                bestChild.get(new Random().nextInt(bestChild.size()));
 //        System.out.println("Best score:");
 //        System.out.println(bestScore+selectedChild.state().boxPosition().render());
         return selectedChild;
@@ -230,4 +243,24 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
     private boolean isFullyExpanded;
     private int wins;
     private int playouts;
+
+    private class NodeComparator implements Comparator<DotsAndBoxesNode>{
+
+        @Override
+        public int compare(DotsAndBoxesNode o1, DotsAndBoxesNode o2) {
+            return Integer.compare(o1.wins(),o2.wins());
+        }
+
+        public Node<DotsAndBoxes> findBestMove(ArrayList<Node<DotsAndBoxes>> childs){
+            PriorityQueue<Node<DotsAndBoxes>> priorityQueue = new PriorityQueue<>();
+            for(Node<DotsAndBoxes> child:childs){
+                priorityQueue.add(child);
+            }
+//            while(!priorityQueue.isEmpty()){
+//                Node<DotsAndBoxes> dotsAndBoxesNode = priorityQueue.poll();
+//            }
+
+            return priorityQueue.peek();
+        }
+    }
 }
