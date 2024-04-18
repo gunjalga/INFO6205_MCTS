@@ -63,6 +63,15 @@ public class TicTacToeNodeTest {
     @Test
     public void backPropagate() {
         // no tests yet
+        TicTacToe.TicTacToeState state = new TicTacToe().new TicTacToeState(Position.parsePosition("X X 0\n0 O .\nX X 0", TicTacToe.X));
+        TicTacToeNode root = new TicTacToeNode(state);
+        MCTS mcts = new MCTS(root);
+        Node<TicTacToe> node2=MCTS.selection(root);
+        node2.simulateRandom();
+        MCTS.backpropagate(node2);
+//      0 wins in this case and root has move of player 1, so the win of node2 (1)will go to root as -1
+        assertEquals(-node2.wins(),root.wins());
+
     }
 
     @Test
