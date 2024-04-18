@@ -91,7 +91,7 @@ public class MCTS<G extends Game > {
 //            call backpropagate from the temp node(note don't add parent to temp node)
 
             }
-//            Position computerMovePosition=root.selectChild().state().position();
+
 
             Node<DotsAndBoxes> child=root.selectChild();
 
@@ -102,6 +102,7 @@ public class MCTS<G extends Game > {
             }else{
                 break;
             }
+//            If computer captures another box and gets another move
             while(root.state().player()==0){
                 for (int i = 0; i < 3000; i++) {
 //            if fully expanded then select or add child
@@ -115,21 +116,26 @@ public class MCTS<G extends Game > {
                     }
 
                 }
-                child=root.selectChild();
+                if(root.children().size()>0){
+                    child=root.selectChild();
 
-                System.out.println(child.state().boxPosition().render());
-                if(!root.state().isTerminal()){
-                    root= new DotsAndBoxesNode(makeComputerMoveDB(child));
+                    System.out.println(child.state().boxPosition().render());
+                    if(!root.state().isTerminal()){
+                        root= new DotsAndBoxesNode(makeComputerMoveDB(child));
+                    }else{
+                        break;
+                    }
                 }else{
                     break;
                 }
 
             }
+
             System.out.println(child.state().boxPosition().render());
 
-
         }
-        int winner= root.state().player()-1;
+        System.out.println(root.state().boxPosition().render());
+        int winner=root.state().winner().get();
         System.out.println("Winner:"+winner);
     }
 
@@ -156,14 +162,16 @@ public class MCTS<G extends Game > {
 
             }
 //            Position computerMovePosition=root.selectChild().state().position();
-
-            Node<TicTacToe> child=root.selectChild();
-            System.out.println(child.state().position().render());
-            if(!root.state().isTerminal()){
-                root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
-            }else{
-                break;
+            if(root.children().size()>0){
+                Node<TicTacToe> child=root.selectChild();
+                System.out.println(child.state().position().render());
+                if(!root.state().isTerminal()){
+                    root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
+                }else{
+                    break;
+                }
             }
+
 
 
         }
@@ -246,7 +254,7 @@ public class MCTS<G extends Game > {
             userMove = new DotsAndBoxes.DotsAndBoxesMove(i,j,direction,player);
             movePlayed =root.state().next(userMove);
         }
-        while (player== movePlayed.player()){
+        while (player== movePlayed.player() && !root.state().isTerminal()){
             System.out.println(root.state().boxPosition().render());
              sc = new Scanner(System.in);
             System.out.println("Enter i and j:");
