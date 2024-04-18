@@ -355,7 +355,7 @@ public static BoxPosition parseBoxPosition(String input, int gridSize) {
         return Optional.empty();
     }
 
-    boolean full(){
+    public boolean full(){
         int count=0;
         for(int i=0;i<gridSize;i++){
             for(int j=0;j<gridSize;j++){

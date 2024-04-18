@@ -108,7 +108,7 @@ public class DotsAndBoxes implements Game<DotsAndBoxes> {
         }
 //        private final BoxPosition position;
     }
-    State<DotsAndBoxes> runGame() {
+    public State<DotsAndBoxes> runGame() {
         int count=0;
         State<DotsAndBoxes> state = start();
         int player = 0;
