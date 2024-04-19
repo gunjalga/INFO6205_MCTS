@@ -4,6 +4,7 @@ import edu.neu.coe.info6205.mcts.core.State;
 import edu.neu.coe.info6205.mcts.dotsandboxes.BoxPosition;
 import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxes;
 import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxesNode;
+import edu.neu.coe.info6205.mcts.tictactoe.TicTacToeNode;
 import io.cucumber.java.eo.Do;
 import org.junit.Test;
 
@@ -36,11 +37,45 @@ public class DotsAndBoxesNodeTest {
                 "·--·--·--·";
         DotsAndBoxes.DotsAndBoxesState state= new DotsAndBoxes().new DotsAndBoxesState(BoxPosition.parseBoxPosition(input,3));
         DotsAndBoxesNode node= new DotsAndBoxesNode(state);
-        System.out.println(node.state().boxPosition().render());
+//        System.out.println(node.state().boxPosition().render());
         assertEquals(true,node.isLeaf());
         assertEquals(1, node.wins());
         assertEquals(1, node.playouts());
     }
+
+    @Test
+    public void children() {
+        String input = "·--·--·--·\n" +
+                "|p1|  |p1|\n" +
+                "·--·  ·--·\n" +
+                "|p0|  |p0|\n" +
+                "·--·--·--·\n"+
+                "|p0|p0|  |\n"+
+                "·--·--·  ·";
+        DotsAndBoxes.DotsAndBoxesState state= new DotsAndBoxes().new DotsAndBoxesState(BoxPosition.parseBoxPosition(input,3));
+        DotsAndBoxesNode node= new DotsAndBoxesNode(state);
+        while (!node.isFullyExpanded()){
+            node.addChild();
+        }
+//        node.selectChild();
+        assertEquals(node.children().size(),2);
+    }
+
+    @Test
+    public void addChild() {
+        String input = "·--·--·--·\n" +
+                "|p1|  |p1|\n" +
+                "·--·  ·--·\n" +
+                "|p0|  |p0|\n" +
+                "·--·--·--·\n"+
+                "|p0|p0|  |\n"+
+                "·--·--·  ·";
+        DotsAndBoxes.DotsAndBoxesState state= new DotsAndBoxes().new DotsAndBoxesState(BoxPosition.parseBoxPosition(input,3));
+        DotsAndBoxesNode node= new DotsAndBoxesNode(state);
+        node.addChild();
+        assertTrue(node.children().size()==1);
+    }
+
 
 
 }
