@@ -26,7 +26,7 @@ public class MCTS<G extends Game > {
     public static void startDotAndBoxes(){
         MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
         Node<DotsAndBoxes> root = mcts.root;
-        int iterations=3000;
+        int iterations=10000;
 
         System.out.println(root.state().boxPosition().render());
         while(!root.state().isTerminal()) {
