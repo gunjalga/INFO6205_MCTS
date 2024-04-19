@@ -18,57 +18,13 @@ import java.util.Scanner;
 public class MCTS<G extends Game > {
 
     public static void main(String[] args) {
-//        MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
-////        System.out.println(mcts.root.state().boxPosition().render());
-//        Node<DotsAndBoxes>root=mcts.root;
-//
-////        Node<DotsAndBoxes> result= new DotsAndBoxesNode(root.state());
-//        for(int i=0;i<500;i++){
-//            Node<DotsAndBoxes> child=selectionNode(root);
-//            if(child!=null){
-//                child.simulateRandom();
-//                backPropagateBox(child);
-//            }
-//
-//        }
-//        Node<DotsAndBoxes> child=root.selectChild();
-//        System.out.println(child.state().boxPosition().render());
        startDotAndBoxes();
-//        System.out.println(result.state().boxPosition().render());
-//        System.out.println(n1.state().boxPosition().render());
 //        startTicTacToe();
         // This is where you process the MCTS to try to win the game.
     }
     public static void startDotAndBoxes(){
         MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
         Node<DotsAndBoxes> root = mcts.root;
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"left",0));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"top",1));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"bottom",0));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,0,"right",1));
-//
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"bottom",0));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"top",1));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,1,"right",0));
-//
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"left",1));
-//
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"right",0));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"top",1));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(0,2,"bottom",0));
-//
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"bottom",1));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,0,"right",0));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,1,"bottom",1));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"right",0));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,2,"bottom",1));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(1,1,"right",1));
-//
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"left",1));
-//        root.state().next(new DotsAndBoxes.DotsAndBoxesMove(2,0,"bottom",0));
-
-
-
 
         System.out.println(root.state().boxPosition().render());
         while(!root.state().isTerminal()) {
@@ -175,7 +131,7 @@ public class MCTS<G extends Game > {
 
 
         }
-        int winner= root.state().player()-1;
+        int winner= root.state().winner().get();
         System.out.println("Winner:"+winner);
     }
 
