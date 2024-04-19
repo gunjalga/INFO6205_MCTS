@@ -40,7 +40,7 @@ public class DotsAndBoxesNode implements Node<DotsAndBoxes>{
 
     private double calculateUCTScore(DotsAndBoxesNode child) {
         double exploitationTerm = ((double) child.wins() / child.playouts());
-        double explorationTerm = 2 * Math.sqrt(Math.log(playouts()) / child.playouts());
+        double explorationTerm = 1.4 * Math.sqrt(Math.log(playouts()) / child.playouts());
         return exploitationTerm + explorationTerm;
     }
 

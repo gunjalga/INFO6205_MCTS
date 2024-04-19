@@ -32,7 +32,7 @@ public class MCTS<G extends Game > {
             if(root.state().isTerminal()){
                 break;
             }
-            for (int i = 0; i < 3000; i++) {
+            for (int i = 0; i < 10000; i++) {
 //            if fully expanded then select or add child
                 if(root.state().isTerminal()){
                     break;
@@ -60,7 +60,7 @@ public class MCTS<G extends Game > {
             }
 //            If computer captures another box and gets another move
             while(root.state().player()==0){
-                for (int i = 0; i < 3000; i++) {
+                for (int i = 0; i < 10000; i++) {
 //            if fully expanded then select or add child
                     if(root.state().isTerminal()){
                         break;
