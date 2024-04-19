@@ -7,6 +7,7 @@ import edu.neu.coe.info6205.mcts.core.State;
 import edu.neu.coe.info6205.mcts.dotsandboxes.BoxPosition;
 import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxes;
 import edu.neu.coe.info6205.mcts.dotsandboxes.DotsAndBoxesNode;
+import edu.neu.coe.info6205.util.Timer;
 
 import java.util.Collection;
 import java.util.Random;
@@ -18,13 +19,14 @@ import java.util.Scanner;
 public class MCTS<G extends Game > {
 
     public static void main(String[] args) {
-       startDotAndBoxes();
-//        startTicTacToe();
+//       startDotAndBoxes();
+        startTicTacToe();
         // This is where you process the MCTS to try to win the game.
     }
     public static void startDotAndBoxes(){
         MCTS mcts = new MCTS(new DotsAndBoxesNode(new DotsAndBoxes().start()));
         Node<DotsAndBoxes> root = mcts.root;
+        int iterations=3000;
 
         System.out.println(root.state().boxPosition().render());
         while(!root.state().isTerminal()) {
@@ -32,8 +34,10 @@ public class MCTS<G extends Game > {
             if(root.state().isTerminal()){
                 break;
             }
-            for (int i = 0; i < 3000; i++) {
+            Timer timer= new Timer();
+            for (int i = 0; i < iterations; i++) {
 //            if fully expanded then select or add child
+
                 if(root.state().isTerminal()){
                     break;
                 }
@@ -42,7 +46,6 @@ public class MCTS<G extends Game > {
                         temp.simulateRandom();
                     backPropagateBox(temp);
                 }
-
 //            simulate from the node which was given by last lines(will return a temp node)
 //            call backpropagate from the temp node(note don't add parent to temp node)
 
@@ -50,6 +53,9 @@ public class MCTS<G extends Game > {
 
 
             Node<DotsAndBoxes> child=root.selectChild();
+            double time=timer.stop();
+            System.out.println("Time for making move: "+time);
+
 
 //            System.out.println(child.state().boxPosition().render());
             if(!root.state().isTerminal()){
@@ -60,11 +66,14 @@ public class MCTS<G extends Game > {
             }
 //            If computer captures another box and gets another move
             while(root.state().player()==0){
-                for (int i = 0; i < 3000; i++) {
+                Timer timer2= new Timer();
+                for (int i = 0; i < iterations; i++) {
+
 //            if fully expanded then select or add child
                     if(root.state().isTerminal()){
                         break;
                     }
+
                     Node<DotsAndBoxes> temp = selectionNode(root);
                     if (temp != null ) {
                         temp.simulateRandom();
@@ -74,7 +83,8 @@ public class MCTS<G extends Game > {
                 }
                 if(root.children().size()>0){
                     child=root.selectChild();
-
+                    double time2=timer2.stop();
+                    System.out.println("Time taken for second move: "+time2);
                     System.out.println(child.state().boxPosition().render());
                     if(!root.state().isTerminal()){
                         root= new DotsAndBoxesNode(makeComputerMoveDB(child));
@@ -84,6 +94,7 @@ public class MCTS<G extends Game > {
                 }else{
                     break;
                 }
+
 
             }
 
@@ -99,13 +110,14 @@ public class MCTS<G extends Game > {
     public static void startTicTacToe(){
         MCTS mcts = new MCTS(new TicTacToeNode(new TicTacToe().new TicTacToeState()));
         Node<TicTacToe> root = mcts.root;
-
+        int iterations=10000;
         while(!root.state().isTerminal()) {
             root = new TicTacToeNode(takeMove(root, 1));
             if(root.state().isTerminal()){
                 break;
             }
-            for (int i = 0; i < 4000; i++) {
+            Timer timer=new Timer();
+            for (int i = 0; i < iterations; i++) {
 //            if fully expanded then select or add child
                 Node<TicTacToe> temp = selection(root);
                 if (temp != null ) {
@@ -120,12 +132,15 @@ public class MCTS<G extends Game > {
 //            Position computerMovePosition=root.selectChild().state().position();
             if(root.children().size()>0){
                 Node<TicTacToe> child=root.selectChild();
+                double time = timer.stop();
+                System.out.println("Time taken to play move: "+time);
                 System.out.println(child.state().position().render());
                 if(!root.state().isTerminal()){
                     root= new TicTacToeNode(makeComputerMove(child,child.state().position()));
                 }else{
                     break;
                 }
+
             }
 
 

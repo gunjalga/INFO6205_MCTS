@@ -160,11 +160,11 @@ public class Position {
         int[] diag1=projectDiag(true);
         int[] diag2=projectDiag(false);
         if(diag1[0]==diag1[1] && diag1[1]==diag1[2] && diag1[1]!=-1){
-            System.out.println("Winner 1st diagonal:");
+//            System.out.println("Winner 1st diagonal:");
             return true;
         }
         if(diag2[0]==diag2[1] && diag2[1]==diag2[2] && diag2[1]!=-1){
-            System.out.println("Winner 2nd diagonal:");
+//            System.out.println("Winner 2nd diagonal:");
             return true;
         }
         // TO BE IMPLEMENTED
