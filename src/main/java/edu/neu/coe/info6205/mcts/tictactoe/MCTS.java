@@ -19,8 +19,8 @@ import java.util.Scanner;
 public class MCTS<G extends Game > {
 
     public static void main(String[] args) {
-//       startDotAndBoxes();
-        startTicTacToe();
+       startDotAndBoxes();
+//        startTicTacToe();
         // This is where you process the MCTS to try to win the game.
     }
     public static void startDotAndBoxes(){
@@ -37,7 +37,6 @@ public class MCTS<G extends Game > {
             Timer timer= new Timer();
             for (int i = 0; i < iterations; i++) {
 //            if fully expanded then select or add child
-
                 if(root.state().isTerminal()){
                     break;
                 }
@@ -73,7 +72,6 @@ public class MCTS<G extends Game > {
                     if(root.state().isTerminal()){
                         break;
                     }
-
                     Node<DotsAndBoxes> temp = selectionNode(root);
                     if (temp != null ) {
                         temp.simulateRandom();
@@ -94,7 +92,6 @@ public class MCTS<G extends Game > {
                 }else{
                     break;
                 }
-
 
             }
 
